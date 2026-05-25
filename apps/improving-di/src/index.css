@@ -90,6 +90,28 @@
    the viewport. */
 .improving-di .topics-rail__list.tabs-list-vertical {
   min-width: 280px;
+  /* Restore Titan's natural list border-right (the standalone
+     topics CSS drops it because the wrapper paints it instead).
+     We need it back here so the selected tab's 3px indigo accent
+     (drawn by `.tab-trigger-vertical[data-selected]` with
+     `margin-right: -2px` to nest itself into the list edge)
+     lands ON the border instead of FLOATING ~2px to its left.
+     Without this, the rail shows a doubled divider: indigo bar
+     from the tab + gray bar from the wrapper, with a 2px gap
+     between them. That's the "solapamiento" the unified shell
+     surfaces. */
+  border-right: 1px solid var(--color-black-200);
+}
+/* The wrapper border now belongs to the list; clear it on the
+   wrapper or we'd be painting two parallel lines (the original
+   issue). The toggle button below the tab list loses the
+   continuation of the border for ~30px, which is acceptable
+   visual collateral — the table on the right is much taller
+   than the rail, so the rail's right edge already ends mid-table
+   visually; users read the divider as belonging to the active
+   tab area, not the whole column. */
+.improving-di .topics-rail {
+  border-right: 0;
 }
 .improving-di .topics-rail__tab.tab-trigger-vertical {
   padding-block: var(--spacing-m);
@@ -98,6 +120,23 @@
 }
 .improving-di .topics-rail__tab-count {
   font-size: 13px;
+}
+/* Re-apply the standalone-topics compact contract at the same
+   specificity as our scoped idle rule above. Without this the
+   `--compact` class loses the cascade fight (2 vs 3 classes) and
+   the "Show all 25" state stays at idle density, overflowing the
+   viewport. Matches the values in `topics/src/index.css`
+   `.topics-rail__tab--compact` exactly so the only thing the
+   modifier changes between idle and expanded is the density —
+   layout/colour/border behaviour stays identical. */
+.improving-di .topics-rail__tab--compact.tab-trigger-vertical {
+  padding-block: 5px;
+  padding-inline: 12px;
+  font-size: 12px;
+  gap: 6px;
+}
+.improving-di .topics-rail__tab--compact .topics-rail__tab-count {
+  font-size: 11px;
 }
 
 /* Single-pill affinity cell reads as one number per row, so the
