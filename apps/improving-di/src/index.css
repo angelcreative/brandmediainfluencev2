@@ -43,6 +43,40 @@
 }
 
 /* ---------------------------------------------------------------
+   Breadcrumb strip — force the inner <ol> to behave as a block
+   so its `max-width: var(--bdi-max)` + `margin: 0 auto` actually
+   center it inside the full-bleed strip.
+
+   Why this rule is needed in improving-di:
+   · Titan ships `.breadcrumb-nav { display: inline-flex }` for
+     the small/embedded breadcrumb cases (page-breadcrumb-host,
+     titan-app-content-inner). When react-aria's <Breadcrumbs>
+     renders as an <ol class="breadcrumb-nav"> directly inside
+     our full-bleed `.app-layout__breadcrumb-strip`, the `inline-
+     flex` carries over and `margin: 0 auto` becomes a no-op (you
+     can't auto-center an inline-level box — the surrounding text-
+     alignment + line box decide its position, and our strip never
+     sets text-align: center).
+   · The visible symptom: at viewports wider than `--bdi-max`
+     (≈1280px) the strip stays edge-to-edge AND its inner <ol>
+     stays pinned to the left, so `Home` lands at the page left
+     edge while `.bdi-main` below it (a regular block with the
+     same max-width + margin: auto) centers correctly. Breadcrumb
+     and back-button end up on different vertical axes — the
+     "se solapan / no alineado" the user sees in wide viewports.
+
+   Promoting to `display: flex` keeps the horizontal item flow
+   AND turns the <ol> into a block-level box, which lets the
+   `margin: 0 auto` from the topics rule finally center it. The
+   breadcrumb now lives on the SAME vertical axis as the back-
+   button, audience legend, report-section nav, and workspace
+   search row — a single column for the whole report shell, just
+   what `--bdi-title-indent: 0` was supposed to deliver. */
+.improving-di .app-layout__breadcrumb-strip .breadcrumb-nav {
+  display: flex;
+}
+
+/* ---------------------------------------------------------------
    Report-section nav — alignment + density
    1) Tabs left-edge aligns with the back-button (←). The source
       app uses `padding-left: 48px` (= back-button width 36px +
