@@ -88,7 +88,24 @@
    the expanded "Show all 25" state — that part needs to stay
    dense regardless of the host app, otherwise 25 tabs overflow
    the viewport. */
+/* Widen the Tabs grid column that holds the rail. The standalone
+   topics workspace caps it at minmax(220px, 240px) because its
+   tab labels are denser (13px font, 10/14 padding) and fit. In
+   improving-di we lift the tab density to Titan default (14px
+   font, m/xl padding) so labels need ~280px to render without
+   truncating. Without this column bump the TabList's `min-width:
+   280px` (below) overflows its grid track by ~40px and lands the
+   selected tab's right-edge indigo accent ON TOP of the category
+   table — the actual "solapamiento" the user is seeing. Bumping
+   the column instead keeps the rail INSIDE its track and the
+   table 24px (gap) clear of the rail edge. */
+.improving-di .topics-tabs.tabs-root-vertical {
+  grid-template-columns: minmax(280px, 280px) minmax(0, 1fr);
+}
 .improving-di .topics-rail__list.tabs-list-vertical {
+  /* Belt-and-suspenders so the list always fills the wider
+     column even when its content would otherwise be narrower
+     (e.g. compact mode with shorter labels). */
   min-width: 280px;
   /* Restore Titan's natural list border-right (the standalone
      topics CSS drops it because the wrapper paints it instead).
@@ -98,8 +115,7 @@
      lands ON the border instead of FLOATING ~2px to its left.
      Without this, the rail shows a doubled divider: indigo bar
      from the tab + gray bar from the wrapper, with a 2px gap
-     between them. That's the "solapamiento" the unified shell
-     surfaces. */
+     between them. */
   border-right: 1px solid var(--color-black-200);
 }
 /* The wrapper border now belongs to the list; clear it on the
