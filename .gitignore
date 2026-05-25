@@ -50,3 +50,26 @@ coverage/
 ._*
 .Spotlight-V100
 .Trashes
+
+# Workspace-only apps — not part of the improving-di product.
+# These live on disk so we can keep iterating locally, but they
+# never ship to the brandmediainfluencev2 repo. Only improving-di
+# (the unified mockup) plus its two source workspaces (better-di-in
+# and topics) are part of the published monorepo.
+apps/UI-test/
+apps/better-di/
+apps/brandinfper/
+apps/chat-insights/
+apps/digital-test-1/
+apps/flow-digital/
+apps/menu_test/
+apps/navigation/
+apps/report-list/
+apps/sidebar-tests/
+apps/sidebar-tests-2/
+apps/sidebar-tests-3/
+apps/toast/
+apps/user-know/
+apps/web/
+apps/web-2/
+apps/web-3/
