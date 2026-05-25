@@ -1,0 +1,11 @@
+# Netlify: set "Base directory" to apps/better-di (monorepo) or use this folder as the linked repo root.
+# Drag-and-drop: upload the contents of dist/ after `npm run build` (include _redirects from public/).
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

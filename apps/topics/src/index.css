@@ -1,0 +1,1124 @@
+/* =============================================================
+   Topics · header + page title
+   Mirrors the navbar + PageHeader from better-di-in.
+   Titan light surfaces · steel/aquamarine/tomato semantic palette.
+   ============================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { margin: 0; padding: 0; min-height: 100%; }
+body {
+  /* Poppins first; var() alone can invalidate font-family if token missing. */
+  font-family: "Poppins", var(--font-audiense, system-ui), system-ui, sans-serif;
+  background: var(--surface-page, #fafafb);
+  color: var(--text-body, var(--color-steel-800));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+ul { list-style: none; padding: 0; margin: 0; }
+
+/* =============================================================
+   Titan table — row hover + sortable header tones shifted to
+   steel-100 across the whole table. Titan defaults the row hover
+   to --surface-hover (black-10) and the sortable th hover /
+   sorted state to black-200, both cool-grey on our light steel
+   pages. Steel-100 keeps the same neutral family as the rest of
+   the surfaces (rail, navbar dividers, separators) and gives the
+   row and the th the SAME background tint — so when a sortable
+   column is sorted (or being hovered) and the user also hovers a
+   row, the active cell ends up the same tone as the rest of the
+   row instead of competing with it. Same recipe is mirrored in
+   better-di-in so tables read identically across products. */
+:root {
+  --table-row-hover: var(--color-steel-100);
+  --table-slot-header-hover-bg: var(--color-steel-100);
+  --table-slot-header-sorted-bg: var(--color-steel-100);
+}
+
+/* =============================================================
+   Input focus — kill the browser's native focus outline (the
+   loud orange/yellow ring some OS/browser combos paint by
+   default). Titan resets outlines on buttons, tabs, menus, etc.,
+   but leaves <input> untouched, so without this rule we'd get
+   the OS focus ring competing with Titan's own indicator (which
+   shifts the border to --input-slot-border-focus on
+   [data-focus-within]). That border-color change is enough as a
+   visual cue for keyboard users, and react-aria still sets
+   data-focus-visible for screen readers — so dropping the
+   native outline doesn't degrade a11y. */
+.field-root .input-field:focus,
+.field-root .input-field:focus-visible,
+.field-root .input-with-icons:focus-within,
+.field-root .input-with-icons :focus-visible,
+.field-root .textarea-field:focus,
+.field-root .textarea-field:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* =============================================================
+   Navbar logo — replace Titan's themed logo with Digital
+   Intelligence for Meta brand mark, sized to the navbar height.
+   ============================================================= */
+.navbar-logo {
+  content: url('/logos/logo-di.svg');
+  height: auto;
+  width: auto;
+  max-height: none;
+  display: block;
+}
+
+/* Strip every navbar action button except the user (avatar + chevron). */
+.navbar .navbar-left-group .navbar-icon-button,
+.navbar .navbar-right-group > .navbar-icon-button {
+  display: none !important;
+}
+
+/* =============================================================
+   Pill token overrides — keep semantic colors stable across the
+   linkedin theme. Same specificity as the theme so portal-rendered
+   pills inherit from html, not theme defaults.
+   ============================================================= */
+html[data-theme], .bdi-app {
+  --pill-success-background: var(--color-aquamarine-100);
+  --pill-success-text: var(--color-aquamarine-600);
+  --pill-success-icon-color: var(--color-aquamarine-600);
+  --pill-error-background: var(--color-tomato-100);
+  --pill-error-text: var(--color-tomato-600);
+  --pill-error-icon-color: var(--color-tomato-600);
+  --pill-background: var(--color-steel-100);
+  --pill-text: var(--color-steel-600);
+  --pill-icon-color: var(--color-steel-600);
+}
+
+.bdi-app {
+  /* Layout tokens — pinned to Titan's chrome tokens so that
+     navbar, breadcrumb strip and main content share the same
+     max-width AND the same horizontal padding. Without this
+     alignment the navbar centers at one width (1440 / spacing-l)
+     while our breadcrumb + main centered at another, and on
+     viewports wider than 1440 the logo ends up visibly offset
+     from the page content. Falls back to a sensible 1280 +
+     responsive gutter for environments where Titan's tokens
+     aren't loaded (tests, isolated previews). */
+  --bdi-gutter: var(--spacing-l, clamp(20px, 2.4vw, 32px));
+  --bdi-max: var(--layout-content-max-width-md, 1280px);
+  /* Visual indent applied to breadcrumb, sub-meta, audience
+     chips and workspace. Kept at 0 so they share the left edge
+     of the back-button (←) instead of the H1 text — back-button
+     becomes the vertical axis the whole page anchors to. Single
+     knob: bump this value if we ever want to re-indent to the
+     H1 (then 48px = back-button width 36 + title-row gap 12). */
+  --bdi-title-indent: 0px;
+  --bdi-radius: 14px;
+  --bdi-radius-sm: 10px;
+  --bdi-pad: 22px;
+  --bdi-pad-lg: 28px;
+  --bdi-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+  --bdi-card-bg: var(--surface-card, #ffffff);
+  --bdi-page-bg: var(--surface-page, #fafafb);
+  --bdi-border: var(--color-steel-200);
+
+  min-height: 100vh;
+  display: grid;
+  /* navbar · breadcrumb strip · main */
+  grid-template-rows: auto auto 1fr;
+  background: var(--bdi-page-bg);
+}
+
+/* =============================================================
+   Page breadcrumb strip — full-bleed below the navbar, with the
+   actual breadcrumb centered under the layout's max content width.
+   Mirrors the report-list pattern; uses Titan tokens for slot
+   background and bottom border so theming carries through.
+   ============================================================= */
+.app-layout__breadcrumb-strip {
+  width: 100%;
+  background: var(--breadcrumb-slot-bg, var(--surface-card, #ffffff));
+  border-bottom: var(--breadcrumb-slot-border-bottom, 1px solid var(--bdi-border));
+}
+.app-layout__breadcrumb-strip .breadcrumb-nav {
+  width: 100%;
+  max-width: var(--bdi-max);
+  margin: 0 auto;
+  /* Symmetric gutter padding + the page indent knob. With
+     --bdi-title-indent at 0 the first crumb ("Home") lines up
+     with the back-button slot below it. If the indent ever goes
+     non-zero the breadcrumb follows automatically. */
+  padding: 10px var(--bdi-gutter) 10px calc(var(--bdi-gutter) + var(--bdi-title-indent));
+  flex-wrap: wrap;
+  row-gap: 2px;
+  background: transparent;
+  border-bottom: none;
+  box-sizing: border-box;
+  min-width: 0;
+}
+.app-layout__breadcrumb-strip .breadcrumb-item {
+  flex-shrink: 0;
+  min-width: min-content;
+}
+
+/* =============================================================
+   Typography
+   ============================================================= */
+.bdi-app h1 {
+  /* Titan "heading-m-600" shorthand → 24px/28px Audiense. Locks
+     the title to a stable, design-system size instead of the
+     previous responsive clamp(22–30px) that drifted between
+     viewports. Weight is overridden to 700 (bold) — Titan ships
+     heading shorthands only in 500/600, so we layer the bold
+     weight on top of the shorthand. Same rule mirrored in
+     better-di-in so both products read with the same H1. */
+  font: var(--heading-m-600);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--text-title, var(--color-steel-900));
+}
+.bdi-app p { margin: 0; color: var(--text-body, var(--color-steel-800)); }
+.bdi-num { font-variant-numeric: tabular-nums; color: var(--color-steel-800); }
+
+/* =============================================================
+   Layout · main
+   ============================================================= */
+.bdi-main {
+  width: 100%;
+  max-width: var(--bdi-max);
+  margin: 0 auto;
+  padding: 28px var(--bdi-gutter) 88px;
+  display: grid;
+  gap: 22px;
+}
+
+/* =============================================================
+   Page header
+   ============================================================= */
+.bdi-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: end;
+  padding-bottom: 4px;
+}
+.bdi-header__title { display: grid; gap: 6px; max-width: 720px; }
+.bdi-header__title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.bdi-header__title-row h1 { margin: 0; }
+/* Tighten the (i) icon against the H1 so it reads as a single
+   "title + info" unit. The flex `gap` on the title row is 12px
+   (right for back-button ↔ h1); a negative left margin pulls the
+   info button 8px closer for an effective 4px gap. */
+.bdi-header__title-row .bdi-th-info-btn {
+  margin-left: -8px;
+}
+
+/* Circular ghost back-button — indigo disc with link-blue icon */
+.bdi-header__back {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border-radius: 999px;
+  background: var(--color-indigo-100);
+  color: var(--link-slot-color, var(--color-indigo-600));
+  transition: background .15s, color .15s, transform .12s;
+}
+.bdi-header__back:hover {
+  background: color-mix(in srgb, var(--color-indigo-100) 70%, var(--color-indigo-200));
+  color: var(--color-indigo-700);
+}
+.bdi-header__back:active { transform: scale(0.96); }
+.bdi-header__back svg { width: 18px; height: 18px; }
+
+/* (i) button next to the page <h1>: bigger hit area than table headers. */
+.bdi-header__title-row .bdi-th-info-btn {
+  width: 28px;
+  height: 28px;
+}
+.bdi-header__title-row .bdi-th-info-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* =============================================================
+   Audience legend — chip pair under the page title.
+   Both chips can be open at once so the user can compare
+   "Your audience" vs "Baseline" side by side.
+   ============================================================= */
+.bdi-audience-legend {
+  padding-left: var(--bdi-title-indent);
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.bdi-audience-legend__divider {
+  color: var(--copy-slot-muted, var(--color-steel-500));
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+.bdi-audience-legend__anchor {
+  display: inline-flex;
+}
+.bdi-audience-legend__text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
+}
+/* No open-state override on purpose: with variant="secondary"
+   the chip already carries a visible border + bg, so we don't
+   want the popover-open paint to repaint it with a different
+   tone. The chevron rotation below stays as the only visual
+   cue that the popover is open. */
+.bdi-audience-legend__dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+.bdi-audience-legend__chip--audience .bdi-audience-legend__dot {
+  background: var(--color-indigo-600, #4f46e5);
+}
+.bdi-audience-legend__chip--baseline .bdi-audience-legend__dot {
+  /* Same indigo-300 as `.bdi-penreach__fill--bench` (charts + table
+     baseline bar) so the legend dot reads as "this is the baseline
+     audience" in the exact hue users associate with the baseline
+     bar. The previous neutral grey implied a different kind of
+     value, fighting the chart's story. */
+  background: var(--color-indigo-300, #a5b4fc);
+}
+.bdi-audience-legend__label {
+  font-weight: 600;
+}
+.bdi-audience-legend__sep {
+  color: var(--copy-slot-muted, var(--color-steel-500));
+  user-select: none;
+}
+.bdi-audience-legend__count {
+  color: var(--copy-slot-muted, var(--color-steel-600));
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.bdi-audience-legend__chev {
+  transition: transform .15s ease;
+}
+.bdi-audience-legend__chip[data-open='true'] .bdi-audience-legend__chev {
+  transform: rotate(180deg);
+}
+
+/* Titan ships `.menu-popover` (MenuTrigger dropdown) with a thin
+   stroke + shadow combo. Our products read better as shadow-only
+   floating cards — same rule used by `.bdi-audience-legend__popover`
+   and `.bdi-filter-popover`. Source order beats Titan's defaults,
+   so no !important needed. */
+.menu-popover {
+  border: 0;
+}
+
+/* Popover — soft floating card. We share the `.bdi-filter-popover`
+   chrome with other filter popovers (which carry only a 1px border
+   and no shadow). The shadow is set explicitly here so the audience
+   and baseline definitions read as elevated cards on the page. */
+.bdi-audience-legend__popover.react-aria-Popover,
+.bdi-audience-legend__popover {
+  width: min(340px, calc(100vw - 32px));
+  max-height: none;
+  border: 0 !important;
+  border-radius: 12px;
+  background: var(--surface-card, #ffffff);
+  box-shadow:
+    0 12px 32px rgba(15, 23, 42, .14),
+    0 2px 6px rgba(15, 23, 42, .06);
+}
+.bdi-audience-legend__dialog,
+.react-aria-Dialog.bdi-audience-legend__dialog {
+  background: var(--surface-card, #ffffff) !important;
+  background-color: #ffffff !important;
+  display: flex;
+  flex-direction: column;
+}
+.bdi-audience-legend__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 10px 4px 16px;
+}
+.bdi-audience-legend__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, var(--color-steel-900));
+  text-align: left;
+  flex: 1 1 auto;
+}
+.bdi-audience-legend__close {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-radius: 999px;
+  color: var(--color-steel-600, #475569);
+}
+.bdi-audience-legend__close:hover {
+  background: var(--color-steel-100, #f1f5f9);
+  color: var(--color-steel-800, #1e293b);
+}
+.bdi-audience-legend__body {
+  padding: 12px 16px 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-primary, var(--color-steel-800));
+}
+.bdi-audience-legend__body p {
+  margin: 0 0 12px;
+}
+.bdi-audience-legend__body p:last-child {
+  margin-bottom: 0;
+}
+.bdi-audience-legend__body strong {
+  color: var(--text-primary, var(--color-steel-900));
+  font-weight: 600;
+}
+
+/* Audience definition — boolean criteria blocks. */
+.bdi-audience-def {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bdi-audience-def__block {
+  background: var(--color-steel-100, #e2e8f0);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.bdi-audience-def__label {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, var(--color-steel-900));
+}
+.bdi-audience-def__values {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-primary, var(--color-steel-800));
+}
+.bdi-audience-def__op {
+  font-weight: 700;
+  color: var(--text-primary, var(--color-steel-900));
+  padding: 0 2px;
+}
+.bdi-audience-def__between {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary, var(--color-steel-900));
+  letter-spacing: 0.04em;
+  padding-left: 14px;
+}
+
+@media (max-width: 640px) {
+  .bdi-audience-legend {
+    padding-left: 0;
+  }
+  .bdi-audience-legend__chip {
+    flex-wrap: wrap;
+  }
+}
+
+/* =============================================================
+   (i) info trigger — must be RacButton (Focusable) inside
+   TitanTooltip so TooltipTrigger's hover/focus context attaches.
+   ============================================================= */
+.bdi-th-info-blocker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.bdi-th-info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-steel-500);
+  cursor: pointer;
+  transition: color .12s ease, background-color .12s ease;
+  flex-shrink: 0;
+  font: inherit;
+  vertical-align: middle;
+  position: relative;
+  z-index: 5;
+}
+.bdi-th-info-btn:hover,
+.bdi-th-info-btn:focus-visible {
+  color: var(--color-steel-800);
+  background: var(--color-black-100);
+}
+.bdi-th-info-btn:focus-visible {
+  outline: 2px solid var(--border-focus, var(--color-ocean-500));
+  outline-offset: 2px;
+}
+
+/* TitanTooltip portal — sit above other floating chrome. */
+.tooltip-box {
+  z-index: 21000 !important;
+}
+
+/* =============================================================
+   Topics · page header (eyebrow + title + submeta + actions)
+   Mirrors the spacing/typography of better-di-in's PageHeader but
+   adds an eyebrow (project · context · audience) and a submeta
+   line (totals + last refreshed), plus a right-side action slot
+   for "How to read this view".
+   ============================================================= */
+.topics-page-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: end;
+  /* More breathing room below the title block so it doesn't
+     crowd the workspace that follows. Combined with the larger
+     gap inside the title area, the page H1 now sits in a clearly
+     defined visual region (Common Region / Proximity), instead
+     of running into the rail/table. */
+  padding-block: 8px 20px;
+}
+.topics-page-header__title-area {
+  display: grid;
+  /* Air between title row, sub-meta and audience chips. 12px
+     reads as "related but distinct lines" — tighter felt cramped
+     against the 24px H1, looser broke the perception of a
+     single page-header unit. */
+  gap: 12px;
+  max-width: 820px;
+}
+.topics-page-header__eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+  letter-spacing: 0;
+}
+.topics-page-header__eyebrow-sep {
+  color: var(--color-steel-400);
+  user-select: none;
+}
+.topics-page-header__submeta {
+  padding-left: var(--bdi-title-indent);
+  font-size: 13px;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+.topics-page-header__submeta-sep {
+  color: var(--color-steel-400);
+  user-select: none;
+}
+
+@media (max-width: 760px) {
+  .topics-page-header {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* =============================================================
+   Interests · workspace (vertical-tabs split with custom rail)
+   Left rail = react-aria Tabs in vertical mode, dressed with the
+   Titan tab classes from titan-compositions.css. The rail is
+   wrapped in a custom container so we can append a "Show all 25
+   / Show top 8" toggle below the tablist — the bare TitanTabs
+   API doesn't support that.
+   Right panel = interest header + per-interest search + categories
+   table. No card chrome on purpose: rail and panel sit directly
+   on the page background, hierarchy comes from layout, not a box. */
+.topics-workspace {
+  min-width: 0;
+  /* Workspace (rail + panel) shares the same indent knob as the
+     breadcrumb / sub-meta / audience chips. At 0 it sits flush
+     with the back-button slot, so the rail's first tab aligns
+     vertically with the back arrow above. */
+  padding-left: var(--bdi-title-indent);
+}
+.topics-tabs.tabs-root-vertical {
+  grid-template-columns: minmax(220px, 240px) minmax(0, 1fr);
+  gap: 24px;
+}
+.topics-tab-panel.tab-panel {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+/* Rail container: tab list at the top, "show top/all" toggle at
+   the bottom. The vertical border on the right comes from
+   Titan's `.tabs-list-vertical` (so the toggle sits visually
+   inside the same column without painting its own border).
+   The rail no longer hosts its own search — the panel's
+   universal Search categories drives both surfaces (the rail's
+   count column flips to "matches in this interest" while a query
+   is active; see `[data-no-matches]` rule below). */
+.topics-rail {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-right: 1px solid var(--color-black-200);
+}
+
+.topics-rail__list.tabs-list-vertical {
+  /* Inherit visual contract from Titan but drop the border so
+     the wrapper paints it instead (the toggle button below the
+     tablist needs to align with that same edge).
+     IMPORTANT: do NOT flex: 1 (was pushing the "Show all" toggle
+     to the bottom of the rail, far from the last visible tab).
+     Let the list size to its content so the toggle sits right
+     below the last tab — that's the affordance users expect ("the
+     next item in the list expands it"). The empty space below the
+     toggle is intentional: the rail's right border keeps drawing
+     to match the panel height. */
+  border-right: 0;
+  padding-inline: 0;
+  flex: 0 0 auto;
+}
+.topics-rail__tab.tab-trigger-vertical {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-block: 10px;
+  padding-inline: 14px;
+  font-size: 13px;
+}
+.topics-rail__tab-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.topics-rail__tab-count {
+  font-size: 12px;
+  color: var(--copy-slot-muted, var(--color-steel-500));
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+.topics-rail__tab.tab-trigger-vertical[data-selected] .topics-rail__tab-count {
+  color: var(--text-primary, var(--color-steel-700));
+}
+
+/* Rail empty state — shown only when the universal search filters
+   every interest out (no parent has any matching category). Stays
+   compact so it doesn't dominate the column; the panel's own
+   empty state carries the "Clear search" CTA so this is just a
+   confirmation that the rail is intentionally blank. */
+.topics-rail__empty {
+  margin: 12px 14px;
+  font-size: 12px;
+  color: var(--copy-slot-muted, var(--color-steel-500));
+}
+
+/* Compact rail variant — opt-in via the `compactExpanded` prop on
+   TopicsView. Kicks in only while the user has the full 25-tab
+   list expanded; the idle 5-tab view keeps the comfortable
+   density above. Reduces the per-row vertical footprint by ~45%
+   (10/14 → 5/12) so the whole list fits the rail column without
+   pushing the toggle off-screen. Search mode is excluded by the
+   JSX guard — when the user is filtering names, scannability
+   wins over density. */
+.topics-rail__list--compact.tabs-list-vertical {
+  /* Slightly tighter inset for the compact list so the count
+     pills sit closer to the right edge of the rail. */
+  padding-inline: 0;
+}
+.topics-rail__tab--compact.tab-trigger-vertical {
+  padding-block: 5px;
+  padding-inline: 12px;
+  font-size: 12px;
+  gap: 6px;
+}
+.topics-rail__tab--compact .topics-rail__tab-count {
+  font-size: 11px;
+}
+
+.topics-rail__toggle {
+  /* Aligned with the tab text (same 14px left padding) so it
+     reads as the "next item" continuing the rail rather than a
+     stray button — common pattern for collapse/expand affordances
+     (Slack channels list, Linear projects list). */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 8px 0;
+  padding: 8px 14px;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--link-slot-color, var(--color-indigo-600));
+  cursor: pointer;
+  align-self: flex-start;
+}
+.topics-rail__toggle:hover {
+  background: var(--color-steel-100);
+}
+.topics-rail__toggle-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--copy-slot-muted, var(--color-steel-500));
+  background: var(--color-steel-100);
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Panel head: group name + per-group search. Title on the left
+   (anchors the reading order), search on the right (where the
+   eye lands last). The two rows collapse on narrow viewports
+   so the search input gets a usable width on tablet sizes. */
+.topics-panel {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.topics-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.topics-panel__title-block {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.topics-panel__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary, var(--color-steel-900));
+  line-height: 1.25;
+}
+.topics-panel__sub {
+  margin: 0;
+  font-size: 12px;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+.topics-panel__search {
+  flex: 0 1 320px;
+  min-width: 200px;
+  max-width: 360px;
+}
+.topics-panel__search .input-field-root {
+  margin: 0;
+}
+
+/* Minimal text link used in the empty-state "Clear search"
+   affordance. Same hue family as Titan's link slot but kept
+   here so the empty state doesn't have to import TitanButton
+   just to render a one-word action. */
+.topics-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  color: var(--link-slot-color, var(--color-indigo-600));
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.topics-link:hover {
+  text-decoration: none;
+}
+
+/* =============================================================
+   Topics · table cell helpers
+   Layout / chrome of the table itself is handled by TitanTable
+   (react-aria + Titan tokens). We only style the bespoke cell
+   contents: the title block (name + sub-meta), the count chip
+   and the selectivity cell (value + pill side by side).
+   ============================================================= */
+.topics-table {
+  margin-top: 4px;
+}
+/* Typography baseline for the table — Titan defaults th to bold
+   and td to regular at the button slot font-size. We collapse
+   both to the same Titan body-m-400 shorthand (400 14px /
+   leading-m Audiense) so headers and cells share the same body
+   weight + size + family. Result: a calmer table where emphasis
+   comes from cell-level data styling (the affinity pill, the
+   audience bar) instead of a bold header row that competes with
+   the actual data.
+
+   Selector caveat: react-aria-components puts the `topics-table`
+   className on the inner <table> element (same node that carries
+   `.table-borderless`), NOT on a wrapping element — so we use
+   `.topics-table thead th` etc. without a descendant combinator
+   to keep the specificity reaching the th/td. We also target the
+   inner sort-header button explicitly because <button> elements
+   short-circuit font inheritance in some browsers.
+
+   font-variant-numeric and letter-spacing are NOT part of the
+   `font` shorthand, so tabular-nums on numeric cells survives.
+   Same recipe in better-di-in for consistency. */
+.topics-table thead th,
+.topics-table thead th button,
+.topics-table thead th .column-sort-header,
+.topics-table tbody td {
+  font: var(--body-m-400);
+}
+
+/* Header info-icon pattern — same contract as better-di-in:
+   `.bdi-th-with-info` lines up the column label with a small (i)
+   circle button to its right, and `.bdi-th-info-blocker` swallows
+   pointer/keyboard events on the icon so reaching for the tooltip
+   never triggers the column's sort header. The improving-di shell
+   already inherits the equivalent rules from better-di-in's CSS;
+   we mirror them here so the standalone topics app gets the same
+   look. */
+.bdi-th-with-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+.bdi-th-info-blocker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.bdi-th-info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-steel-500);
+  cursor: pointer;
+  transition: color .12s ease, background-color .12s ease;
+  flex-shrink: 0;
+  font: inherit;
+  vertical-align: middle;
+  position: relative;
+  z-index: 5;
+}
+.bdi-th-info-btn:hover,
+.bdi-th-info-btn:focus-visible {
+  color: var(--color-steel-800);
+  background: var(--color-black-100);
+}
+.bdi-th-info-btn:focus-visible {
+  outline: 2px solid var(--border-focus, var(--color-ocean-500));
+  outline-offset: 2px;
+}
+
+.topics-cell-title {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.topics-cell-title__name {
+  /* Category name in the row-header cell. Inherits font /
+     size / weight from the td baseline (body-m-400) so the name
+     reads at the same body weight as the rest of the row instead
+     of competing with it. We only keep the color + ellipsis here
+     since those aren't covered by the inherited body font. */
+  color: var(--text-primary, var(--color-steel-900));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.topics-cell-title__sub {
+  font-size: 12px;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.topics-cell-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  min-width: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--color-steel-100);
+  color: var(--color-steel-700);
+  font-size: 12px;
+  font-weight: 600;
+}
+.topics-cell-num {
+  text-align: right;
+}
+
+/* "Meta native" pill — flexbox so the brand mark sits flush with
+   the label and the whole composition stays on one line. The
+   logo is decorative (the text label already says "Meta native"),
+   so we skip alt text and let screen readers read just the label. */
+.topics-source-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+}
+.topics-source-pill__logo {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: block;
+  flex: 0 0 auto;
+}
+/* =============================================================
+   Topics · dual bar (audience over baseline)
+   The audience bar takes the semantic tone so over/under reads at
+   a glance. The baseline bar stays neutral steel so the delta
+   between the two carries the comparison, not the absolute width.
+   ============================================================= */
+.topics-dualbar {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.topics-dualbar__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+}
+.topics-dualbar__track {
+  position: relative;
+  height: 16px;
+  border-radius: 4px;
+  background: var(--color-steel-100);
+  overflow: hidden;
+}
+.topics-dualbar__fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+}
+/* Both bars are indigo — the audience at full strength
+   (indigo-500) and the baseline at a soft pale tone (indigo-300).
+   Keeping them in the same hue family says "same metric, two
+   audiences" instead of "two different kinds of value", which a
+   neutral grey baseline implied. The over/under/neutral signal
+   already lives in the Affinity pill colour (success/error/base),
+   so colouring the bar by tone would be a redundant second
+   encoding — and worse, it would make the bars stop reading as
+   the same metric across rows. One colour for "your audience",
+   one for "baseline", same colour every time. Same recipe in
+   better-di-in for consistency. */
+.topics-dualbar__row:not(.topics-dualbar__row--baseline) .topics-dualbar__fill {
+  background: var(--color-indigo-500);
+}
+.topics-dualbar__row--baseline .topics-dualbar__fill {
+  background: var(--color-indigo-300);
+}
+.topics-dualbar__val {
+  /* Match better-di-in's `.bdi-penreach__pct` typography verbatim
+     so the two tables read at the same density: 11px / weight 500
+     / line-height 1.2 / tabular-nums. The audience-vs-baseline
+     contrast comes from color (text-primary vs muted), not weight
+     — same recipe Brands uses. */
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: var(--text-primary, var(--color-steel-800));
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.topics-dualbar__row--baseline .topics-dualbar__val {
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+
+/* Compact pill sizing inside the topics table — clone of Brands'
+   `.bdi-domain-table .pill` rule. Keeps Titan's default pill at
+   its larger comfortable size everywhere else (filters, page
+   header), but tightens the in-table pill so the affinity column
+   reads at the same density as Brands (11px / w600 / 22px tall /
+   2-8 padding / 0.01em tracking). */
+.topics-table .pill {
+  font-size: 11px;
+  font-weight: 600;
+  min-height: 22px;
+  padding: 2px 8px;
+  letter-spacing: 0.01em;
+  gap: 4px;
+}
+.topics-table .pill svg {
+  width: 10px;
+  height: 10px;
+  stroke-width: 2.5;
+}
+
+/* =============================================================
+   Penetration & reach mega-cell — verbatim clone of better-di-in's
+   `.bdi-penreach`. Both tables now render the same 2×3 grid (% /
+   track / abs reach for audience + baseline) so the metric reads
+   identically across Brands and Interests. The CSS already exists
+   in better-di-in's stylesheet — duplicated here so the standalone
+   topics app renders correctly when it doesn't import the brands
+   sheet (improving-di does import both, but the cascade is
+   idempotent because the rules are byte-identical).
+   ============================================================= */
+.bdi-penreach {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) 9ch;
+  grid-template-rows: auto auto;
+  column-gap: 4px;
+  row-gap: 4px;
+  align-items: center;
+  justify-items: stretch;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.bdi-penreach__track {
+  display: block;
+  width: 100%;
+  height: 16px;
+  background: var(--color-steel-100);
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 0;
+}
+.bdi-penreach__fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  min-width: 2px;
+}
+.bdi-penreach__fill--target {
+  background: var(--color-indigo-500);
+}
+.bdi-penreach__fill--bench {
+  background: var(--color-indigo-300);
+}
+.bdi-penreach__pct {
+  display: block;
+  min-width: 0;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--text-primary, var(--color-steel-800));
+  font-weight: 500;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  justify-self: start;
+}
+.bdi-penreach__abs {
+  display: block;
+  min-width: 0;
+  width: 100%;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--text-primary, var(--color-steel-800));
+  font-weight: 600;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  justify-self: stretch;
+}
+.bdi-penreach__pct--baseline,
+.bdi-penreach__abs--baseline {
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+
+/* Column widths inside the topics table — Brands has 4 columns so
+   its 4th (Category) absorbs slack and the `bdi-cell-penetration`
+   constraint (1% / 140-320px) lands at a comfortable mid-width.
+   Topics ships only 3 columns, so we re-balance:
+   · Pen & reach takes generous room (320–380px) — the %/bar/abs
+     trio in `.bdi-penreach` reads badly compressed below ~280px.
+   · Affinity collapses to the pill's width (1% + nowrap) so it
+     stops absorbing the slack now that there's no 4th column to
+     drink it instead.
+   · Category (no rule) is the only auto column left, so it
+     naturally takes whatever's left — and category names benefit
+     from the breathing room more than a single-pill cell does. */
+.topics-table thead th.bdi-col-penetration,
+.topics-table tbody td.bdi-cell-penetration {
+  min-width: 320px;
+  max-width: 380px;
+  text-align: left;
+}
+.topics-table thead th[data-key='selectivity'],
+.topics-table tbody td.bdi-cell-affinity {
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* =============================================================
+   Topics · empty state
+   ============================================================= */
+.topics-empty {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 56px 20px 64px;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+.topics-empty__icon {
+  color: var(--color-steel-400);
+  margin-bottom: 6px;
+}
+.topics-empty h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary, var(--color-steel-900));
+}
+.topics-empty p {
+  margin: 0;
+  font-size: 13px;
+  max-width: 360px;
+  line-height: 1.5;
+}
+/* Action row sits below the copy and hosts the context-aware
+   reset(s) — "Clear search" and/or "Clear filter" depending on
+   what the user actually had active. Two links read as a row
+   with comfortable click targets; one link reads as a standalone
+   CTA. */
+.topics-empty__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}

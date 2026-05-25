@@ -1,0 +1,82 @@
+/*
+ * titan.css (CDN) can expose invalid --box-shadow-* values ("[object Object]"),
+ * which breaks elevation-dependent surfaces. Redefine the scale for audiense.
+ */
+html[data-theme='audiense'] {
+  --box-shadow-0: none;
+  --box-shadow-1: 0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.08);
+  --box-shadow-2: 0 4px 12px rgba(15, 23, 42, 0.08), 0 12px 28px rgba(15, 23, 42, 0.12);
+  --box-shadow-3: 0 8px 24px rgba(15, 23, 42, 0.1), 0 16px 40px rgba(15, 23, 42, 0.14);
+  --box-shadow-4: 0 12px 32px rgba(15, 23, 42, 0.12), 0 24px 48px rgba(15, 23, 42, 0.16);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-audiense), sans-serif;
+  background: var(--surface-page);
+  color: var(--text-primary);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.toast-app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+  display: grid;
+  gap: var(--spacing-l);
+}
+
+.toast-app__header h1 {
+  margin: 0 0 var(--spacing-3xs);
+  font-size: var(--font-size-xl);
+  line-height: var(--font-leading-xl);
+  font-weight: var(--text-weight-semibold);
+}
+
+.toast-app__header p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-s);
+  line-height: var(--font-leading-s);
+}
+
+.toast-app__panel {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-m);
+  padding: var(--spacing-m);
+  display: grid;
+  gap: var(--spacing-s);
+  box-shadow: var(--box-shadow-1);
+}
+
+.toast-app__panel h2 {
+  margin: 0;
+  font-size: var(--font-size-m);
+  line-height: var(--font-leading-m);
+  font-weight: var(--text-weight-semibold);
+}
+
+.toast-app__sub {
+  margin: var(--spacing-s) 0 0;
+  font-size: var(--font-size-m);
+  line-height: var(--font-leading-m);
+  font-weight: var(--text-weight-semibold);
+}
+
+.toast-app__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3xs);
+}
+
+.toast-app__anchor {
+  position: fixed;
+  bottom: var(--spacing-m);
+  right: var(--spacing-m);
+  z-index: 50;
+  max-width: min(23rem, calc(100vw - 2 * var(--spacing-m)));
+}

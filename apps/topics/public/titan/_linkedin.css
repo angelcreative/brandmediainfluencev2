@@ -1,0 +1,264 @@
+/**
+ * LinkedIn theme — primary: indigo.
+ * html[data-theme="linkedin"]
+ */
+html[data-theme="linkedin"] {
+	--font-audiense: "Poppins", sans-serif;
+
+	/* Background */
+	--background-body: var(--color-white-900);
+	--background: var(--color-white-900);
+	--background-brand: var(--background);
+
+	/* Border */
+	--border: var(--color-steel-200);
+	--border-interactive: var(--color-indigo-300);
+
+	/* Text */
+	--text-disabled: var(--color-disabled-500);
+	--text-error-primary: var(--color-error-600);
+	--text-error-primary-active: var(--color-error-800);
+	--text-error-primary-hover: var(--color-error-700);
+	--text-icon-disabled: var(--color-disabled-500);
+	--text-icon-on-color: var(--color-black-100);
+	--text-icon-secondary: var(--color-indigo-600);
+	--text-icon-secondary-active: var(--color-indigo-400);
+	--text-icon-secondary-hover: var(--color-indigo-500);
+	--text-on-color: var(--color-white-900);
+	--text-primary: var(--color-steel-700);
+	--text-primary-active: var(--color-indigo-700);
+	--text-secondary: var(--color-indigo-600);
+
+	/* System */
+	--background-error: var(--color-error-200);
+	--background-information: var(--color-information-200);
+	--background-success: var(--color-indigo-200);
+	--background-warning: var(--color-warning-200);
+	--background-disabled: var(--color-black-200);
+	--text-error-on-color: var(--color-error-700);
+	--text-icon-error: var(--color-error-600);
+	--text-icon-information: var(--color-information-600);
+	--text-icon-success: var(--color-indigo-600);
+	--text-icon-warning: var(--color-warning-600);
+	--text-information-on-color: var(--color-information-700);
+	--text-success-on-color: var(--color-indigo-700);
+	--text-warning-on-color: var(--color-warning-700);
+
+	/* Button */
+	--button-disabled: var(--color-black-200);
+	--button-primary: var(--color-indigo-600);
+	--button-primary-hover: var(--color-indigo-500);
+	--button-primary-active: var(--color-indigo-700);
+	--button-secondary: var(--color-indigo-200);
+	--button-secondary-hover: var(--color-indigo-200);
+	--button-secondary-active: var(--color-indigo-300);
+	--button-tertiary: var(--color-white-900);
+	--button-tertiary-hover: var(--color-indigo-100);
+	--button-tertiary-active: var(--color-indigo-200);
+	--text-on-primary: var(--color-white-900);
+	--text-on-button-primary: var(--text-on-primary);
+	--text-button-color: var(--color-indigo-600);
+	--text-button-hover-color: var(--color-indigo-500);
+	--text-button-active-color: var(--color-indigo-700);
+	--text-button-neutral-color: var(--color-steel-900);
+	--text-button-neutral-hover-color: var(--color-steel-800);
+	--text-button-neutral-active-color: var(--color-steel-700);
+
+	/* ErrorButton */
+	--error-button-primary: var(--color-error-600);
+	--error-button-primary-hover: var(--color-error-700);
+	--error-button-primary-active: var(--color-error-800);
+	--error-button-secondary: var(--color-black-100);
+	--error-button-secondary-hover: var(--color-error-100);
+	--error-button-secondary-active: var(--color-error-200);
+
+	/* Pill */
+	--pill-background: var(--color-black-200);
+
+	/* Tab */
+	--tab-background: var(--color-white-900);
+	--tab-text: var(--color-steel-700);
+	--tab-text-selected: var(--color-indigo-800);
+	--tab-border-selected: var(--color-indigo-600);
+	--tab-selected-background: var(--color-indigo-100);
+
+	/* Tooltip */
+	--tooltip-background: var(--color-black-800);
+
+	/* Checkbox */
+	--checkbox-size: 20px;
+	--checkbox-checkmark: var(--color-white-900);
+	--checkbox-background: var(--color-white-900);
+	--checkbox-border: var(--color-steel-700);
+	--checkbox-border-hover: var(--color-indigo-500);
+	--checkbox-border-focus: var(--color-information-600);
+	--checkbox-border-disabled: var(--color-disabled-200);
+	--checkbox-border-error: var(--color-error-600);
+	--checkbox-border-error-hover: var(--color-error-400);
+	--checkbox-selected-border: var(--color-indigo-600);
+	--checkbox-selected-background: var(--color-indigo-600);
+	--checkbox-selected-background-hover: var(--color-indigo-400);
+	--checkbox-selected-background-disabled: var(--color-disabled-300);
+
+	/* Radio */
+	--radio-button-size: 20px;
+	--radio-button-border: var(--color-steel-700);
+	--radio-button-border-hover: var(--color-indigo-600);
+	--radio-button-border-focus: var(--color-information-600);
+	--radio-button-border-disabled: var(--color-disabled-200);
+	--radio-button-border-error: var(--color-error-600);
+	--radio-button-disabled: var(--color-disabled-500);
+	--radio-button-selected-border: var(--color-indigo-600);
+	--radio-button-selected-border-hover: var(--color-indigo-500);
+	--radio-button-alert-message-color: var(--color-error-600);
+	--radio-button-alert-icon-color: var(--color-error-500);
+
+	/* Pagination */
+	--pagination-color: var(--color-steel-900);
+	--pagination-page-button-background-hover: var(--color-steel-10);
+	--pagination-page-button-background-active: var(--color-steel-40);
+
+	/* Select / Menu trigger chevron: same shade as menu button (brand) */
+	--select-slot-chevron: var(--text-button-color);
+
+	/* Menu */
+	--menu-min-width: 230px;
+	--menu-max-width: 330px;
+	--menu-background: var(--color-white-900);
+	--menu-color: var(--color-steel-800);
+	--menu-color-mcp: var(--color-white-900);
+	--menu-destructive-color: var(--color-error-600);
+	--menu-item-hover: var(--color-steel-100);
+	--menu-item-pressed: var(--color-steel-200);
+	--menu-item-selected: var(--color-steel-300);
+	--menu-item-disabled: var(--color-disabled-400);
+	--menu-item-disabled-icon: var(--color-disabled-400);
+	--menu-item-icon: var(--color-steel-700);
+	--menu-destructive-item-hover: var(--color-error-100);
+	--menu-destructive-item-pressed: var(--color-error-200);
+	--menu-destructive-item-icon: var(--color-error-500);
+
+	/* Table */
+	--table-actionable-row-hover: var(--color-indigo-100);
+	--table-header-border-bottom: var(--color-steel-300);
+	--table-cell-border-bottom: var(--color-steel-200);
+
+	/* Overlay */
+	--overlay-color: var(--color-black-40);
+
+	/* Avatar */
+	--avatar-background: var(--color-steel-600);
+	--avatar-width: 40px;
+	--avatar-height: 40px;
+
+	/* Button Group */
+	--button-group-background: var(--color-white-900);
+	--button-group-border: var(--color-steel-400);
+	--button-group-color: var(--color-steel-600);
+	--button-group-icon-color: var(--color-steel-500);
+	--button-group-hover-color: var(--color-steel-800);
+	--button-group-hover-icon-color: var(--color-steel-700);
+	--button-group-selected-icon-color: var(--color-indigo-700);
+	--button-group-selected-background: var(--color-indigo-100);
+	--button-group-selected-color: var(--color-indigo-800);
+	--button-group-disabled-color: var(--color-disabled-500);
+	--button-group-disabled-icon-color: var(--color-disabled-400);
+
+	/* Label */
+	--label-color: var(--color-steel-800);
+	--label-background: var(--color-black-200);
+
+	/* Select */
+	--select-button-border: var(--color-steel-300);
+	--select-button-color: var(--color-steel-700);
+	--select-popover-color: var(--color-steel-700);
+	--select-listbox-item-focused-background: var(--color-indigo-100);
+	--select-listbox-item-pressed-background: var(--color-indigo-200);
+	--select-listbox-item-selected-background: var(--color-indigo-200);
+
+	/* NavBar */
+	--navbar-max-width: 1920px;
+	--navbar-height: 70px;
+	--navbar-background: var(--color-white-900);
+	--navbar-border-color: var(--color-steel-100);
+
+	/* Link */
+	--link-color: var(--color-indigo-700);
+	--link-visited-color: var(--color-indigo-900);
+	--link-disabled-color: var(--color-disabled-500);
+	--link-icon-color: var(--color-indigo-600);
+	--link-visited-icon-color: var(--color-indigo-800);
+	--link-disabled-icon-color: var(--color-disabled-400);
+
+	/* Toggle */
+	--toggle-color: var(--color-steel-900);
+	--toggle-background: var(--color-steel-400);
+	--toggle-background-hover: var(--color-steel-300);
+	--toggle-border-focus: var(--color-information-600);
+	--toggle-selected-background: var(--color-indigo-600);
+	--toggle-selected-background-hover: var(--color-indigo-500);
+	--toggle-selected-border-focus: var(--color-information-600);
+	--toggle-ball-background: var(--color-white-900);
+	--toggle-disabled-background: var(--color-disabled-200);
+
+	/* Text Input */
+	--input-placeholder-text: var(--color-steel-400);
+	--input-field-text: var(--color-steel-800);
+	--input-disabled-text: var(--color-disabled-500);
+	--input-background: var(--color-white-900);
+	--input-stroke: var(--color-steel-300);
+	--input-stroke-hover: var(--color-indigo-600);
+	--input-stroke-focus: var(--color-steel-800);
+	--input-stroke-focus-visible: var(--color-information-600);
+	--input-stroke-error: var(--color-error-700);
+	--input-stroke-disabled: var(--color-disabled-500);
+	--input-icon: var(--color-steel-300);
+	--input-icon-focus: var(--color-steel-700);
+	--input-icon-error: var(--color-error-400);
+	--input-icon-disabled: var(--color-disabled-500);
+	--input-element: var(--color-steel-600);
+	--input-element-error: var(--color-error-500);
+	--input-element-disabled: var(--color-disabled-500);
+
+	/* Sidebar — brand accent, steel items */
+	--sidebar-slot-border: var(--color-steel-200);
+	--sidebar-slot-item-color: var(--color-steel-700);
+	--sidebar-slot-item-color-hover: var(--color-steel-900);
+	--sidebar-slot-item-bg-hover: var(--color-steel-100);
+	--sidebar-slot-item-color-active: var(--color-indigo-800);
+	--sidebar-slot-item-bg-active: var(--color-indigo-100);
+	--sidebar-slot-item-accent-active: var(--color-indigo-600);
+	--sidebar-slot-header-color: var(--color-steel-500);
+
+	/* Review-state extensions */
+	--interactive-icon-button-bg: var(--button-secondary);
+	--interactive-icon-button-bg-hover: var(--button-secondary-hover);
+	--interactive-icon-button-bg-active: var(--button-secondary-active);
+	--interactive-icon-button-bg-fallback: var(--color-black-100);
+	--interactive-icon-button-radius: 9999px;
+	--interactive-icon-button-icon: var(--text-button-color);
+	--interactive-icon-button-icon-disabled: var(--color-disabled-500);
+
+	--select-listbox-item-disabled-background: transparent;
+	--select-listbox-item-disabled-color: var(--color-disabled-500);
+	--select-listbox-item-disabled-icon: var(--color-disabled-500);
+
+	--tab-hover-background: var(--tab-selected-background);
+	--tab-disabled-background: transparent;
+	--tab-disabled-text: var(--color-disabled-500);
+
+	--pagination-page-button-background-selected: var(--pagination-page-button-background-active);
+	--pagination-page-button-background-disabled: transparent;
+	--pagination-page-button-color-disabled: var(--color-disabled-500);
+
+	--drawer-close-icon-disabled: var(--color-disabled-500);
+
+	--table-sort-icon-default: var(--color-steel-500);
+	--table-sort-icon-hover: var(--text-secondary);
+	--table-sort-icon-active: var(--text-primary-active);
+	--table-action-item-hover-bg: var(--menu-item-hover);
+	--table-action-item-pressed-bg: var(--menu-item-pressed);
+	--table-action-item-icon: var(--menu-item-icon);
+	--table-action-item-destructive-color: var(--text-error-primary);
+	--table-action-item-destructive-hover-bg: var(--background-error);
+}

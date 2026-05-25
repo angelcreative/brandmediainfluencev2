@@ -1,0 +1,2756 @@
+/* =============================================================
+   Better DI · Brand · Media · Influence Landscape
+   Pure data, no AI summaries.
+   Titan light surfaces · steel/aquamarine/tomato semantic palette.
+   ============================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { margin: 0; padding: 0; min-height: 100%; }
+body {
+  /* Poppins first (brandinfper); var() alone can invalidate font-family if token missing. */
+  font-family: "Poppins", var(--font-audiense, system-ui), system-ui, sans-serif;
+  background: var(--surface-page, #fafafb);
+  color: var(--text-body, var(--color-steel-800));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+ul { list-style: none; padding: 0; margin: 0; }
+
+/* =============================================================
+   Navbar logo — replace Titan's themed logo with Digital
+   Intelligence for Meta brand mark, sized to the navbar height.
+   ============================================================= */
+/* Logo at intrinsic size (358 × 70). The navbar is 70px tall, so the
+   SVG fits naturally without scaling. */
+.navbar-logo {
+  content: url('/logos/logo-di.svg');
+  height: auto;
+  width: auto;
+  max-height: none;
+  display: block;
+}
+
+/* Strip every navbar action button except the user (avatar + chevron).
+   The TitanNavbar renders all action buttons unconditionally; we hide
+   them with CSS so this app shows only the user block on the right
+   and only the logo on the left. */
+.navbar .navbar-left-group .navbar-icon-button,
+.navbar .navbar-right-group > .navbar-icon-button {
+  display: none !important;
+}
+
+/* =============================================================
+   Pill token overrides — keep semantic colors stable across the
+   linkedin theme: never let "success" map to indigo. Applied with
+   the same specificity as the theme so portal-rendered pills
+   (drawer) inherit our values from html, not the theme defaults.
+   ============================================================= */
+html[data-theme], .bdi-app {
+  --pill-success-background: var(--color-aquamarine-100);
+  --pill-success-text: var(--color-aquamarine-600);
+  --pill-success-icon-color: var(--color-aquamarine-600);
+  --pill-error-background: var(--color-tomato-100);
+  --pill-error-text: var(--color-tomato-600);
+  --pill-error-icon-color: var(--color-tomato-600);
+  --pill-background: var(--color-steel-100);
+  --pill-text: var(--color-steel-600);
+  --pill-icon-color: var(--color-steel-600);
+  --pill-slot-success-bg: var(--color-aquamarine-100);
+  --pill-slot-success-color: var(--color-aquamarine-600);
+  --pill-slot-success-icon-color: var(--color-aquamarine-600);
+  --pill-slot-error-bg: var(--color-tomato-100);
+  --pill-slot-error-color: var(--color-tomato-600);
+  --pill-slot-error-icon-color: var(--color-tomato-600);
+  --pill-slot-bg: var(--color-steel-100);
+  --pill-slot-color: var(--color-steel-600);
+  --pill-slot-icon-color: var(--color-steel-600);
+}
+
+/* =============================================================
+   Titan table — row hover + sortable header tones shifted to
+   steel-100. Titan defaults the row hover to --surface-hover
+   (black-10) and the sortable th hover / sorted (pressed) state
+   to black-200, both cool-grey on our light steel surfaces.
+   Steel-100 keeps the same neutral family as the rest of the app
+   and gives row + th the SAME tint — so when a sortable column
+   is sorted (or being hovered) and the user also hovers a row,
+   the active cell ends up the same tone as the rest of the row
+   instead of competing with it. Same recipe is mirrored in the
+   Interests app so tables read identically across products.
+   Scoped via html[data-theme], .bdi-app so portal-rendered
+   children (drawer) still pick the same values up. */
+html[data-theme], .bdi-app {
+  --table-row-hover: var(--color-steel-100);
+  --table-slot-header-hover-bg: var(--color-steel-100);
+  --table-slot-header-sorted-bg: var(--color-steel-100);
+}
+
+.bdi-app {
+  --bdi-gutter: clamp(20px, 2.4vw, 32px);
+  --bdi-max: 1280px;
+  --bdi-radius: 14px;
+  --bdi-radius-sm: 10px;
+  --bdi-pad: 22px;
+  --bdi-pad-lg: 28px;
+  --bdi-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+  --bdi-card-bg: var(--surface-card, #ffffff);
+  --bdi-page-bg: var(--surface-page, #fafafb);
+  --bdi-border: var(--color-steel-200);
+  --bdi-row-sep: color-mix(in srgb, var(--bdi-border) 60%, transparent);
+
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  background: var(--bdi-page-bg);
+}
+
+/* =============================================================
+   Trend semantic
+   ============================================================= */
+.bdi-trend--up { color: var(--color-aquamarine-600); }
+.bdi-trend--down { color: var(--color-tomato-600); }
+.bdi-trend--flat { color: var(--color-steel-500); }
+
+.bdi-trend--up dd, dd.bdi-trend--up { color: var(--color-aquamarine-600); }
+.bdi-trend--down dd, dd.bdi-trend--down { color: var(--color-tomato-600); }
+
+/* =============================================================
+   Typography
+   ============================================================= */
+.bdi-app h1 {
+  /* Titan "heading-m-600" shorthand → 24px/28px Audiense. Locks
+     the title to a stable, design-system size instead of the
+     previous responsive clamp(22–30px). Weight is overridden to
+     700 (bold) — Titan ships heading shorthands only in 500/600,
+     so we layer the bold weight on top of the shorthand. Shared
+     with the Interests app so both products read with the same H1. */
+  font: var(--heading-m-600);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--text-title, var(--color-steel-900));
+}
+.bdi-app h2 {
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  margin: 0;
+  color: var(--text-title, var(--color-steel-900));
+  font-weight: 600;
+}
+.bdi-app h3 {
+  font-size: 15px;
+  line-height: 1.3;
+  margin: 0;
+  color: var(--text-title, var(--color-steel-900));
+  font-weight: 600;
+}
+.bdi-app h4 {
+  font-size: 11px;
+  line-height: 1.4;
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-steel-700);
+  letter-spacing: 0.04em;
+}
+.bdi-app p { margin: 0; color: var(--text-body, var(--color-steel-800)); }
+.bdi-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-steel-500);
+  letter-spacing: 0.08em;
+  margin: 0 0 6px;
+  text-transform: none;
+}
+.bdi-num { font-variant-numeric: tabular-nums; color: var(--color-steel-800); }
+
+/* =============================================================
+   Layout · main
+   ============================================================= */
+.bdi-main {
+  width: 100%;
+  max-width: var(--bdi-max);
+  margin: 0 auto;
+  padding: 28px var(--bdi-gutter) 88px;
+  display: grid;
+  gap: 22px;
+}
+
+/* =============================================================
+   Page header
+   ============================================================= */
+.bdi-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: end;
+  padding-bottom: 4px;
+}
+.bdi-header__title { display: grid; gap: 6px; max-width: 720px; }
+.bdi-header__title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.bdi-header__title-row h1 { margin: 0; }
+/* Tighten the (i) icon against the H1 so it reads as a single
+   "title + info" unit. The flex `gap` on the title row is 12px
+   (correct for back-button ↔ h1); a negative left margin pulls
+   the info button 8px closer for an effective 4px gap. */
+.bdi-header__title-row .bdi-th-info-btn {
+  margin-left: -8px;
+}
+
+/* Circular ghost back-button — indigo disc with link-blue icon */
+.bdi-header__back {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border-radius: 999px;
+  background: var(--color-indigo-100);
+  color: var(--link-slot-color, var(--color-indigo-600));
+  transition: background .15s, color .15s, transform .12s;
+}
+.bdi-header__back:hover {
+  background: color-mix(in srgb, var(--color-indigo-100) 70%, var(--color-indigo-200));
+  color: var(--color-indigo-700);
+}
+.bdi-header__back:active { transform: scale(0.96); }
+.bdi-header__back svg { width: 18px; height: 18px; }
+/* Indent sub-line so it lines up with the heading text (the "P" of
+   "Punk rock fans"), not with the back button. The 48px = 36px button
+   width + 12px row gap; kept as a literal here because the back button
+   is sized in absolute pixels and the value is unlikely to drift. */
+.bdi-header__sub {
+  padding-left: 48px;
+  color: var(--color-steel-700);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* (i) button sitting next to the page <h1>: bump up the hit area
+   from the table-column size (20px) so it doesn't feel lost next
+   to a 24–28px heading. */
+.bdi-header__title-row .bdi-th-info-btn {
+  width: 28px;
+  height: 28px;
+}
+.bdi-header__title-row .bdi-th-info-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* =============================================================
+   Audience legend — pair of chips under the page subhead.
+   Each chip is a real trigger button (not a Titan pill) so the
+   chevron + hover state make it obvious it opens a definition.
+   Both chips can be open at the same time so the user can compare
+   "Your audience" vs "Baseline" side by side.
+   ============================================================= */
+.bdi-audience-legend {
+  padding-left: 48px;
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.bdi-audience-legend__divider {
+  color: var(--copy-slot-muted, var(--color-steel-500));
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+/* Wrapper that anchors the Popover (TitanButton doesn't forward refs). */
+.bdi-audience-legend__anchor {
+  display: inline-flex;
+}
+/* Inner text block: keeps "label · count" tight; the TitanButton's
+   own `gap` only spaces dot ↔ text ↔ chevron, not the inline tokens. */
+.bdi-audience-legend__text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
+}
+/* Rest-state background — soft indigo-100 so both chips read as
+   "tappable badges" out of the box (Fitts/Affordance: the colour
+   makes the click target obvious even before hover). The previous
+   transparent rest state made the chips look like static labels
+   and trained users to ignore the chevron. Open/hover states are
+   already covered by the [data-open] rule and TitanButton tertiary
+   hover, so we only need to set the idle layer here. */
+.bdi-audience-legend__chip.btn {
+  background: var(--color-indigo-100, #eef2ff);
+}
+.bdi-audience-legend__chip.btn[data-open='true'] {
+  background: var(--button-tertiary-slot-bg-hover);
+}
+.bdi-audience-legend__dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+.bdi-audience-legend__chip--audience .bdi-audience-legend__dot {
+  background: var(--color-indigo-600, #4f46e5);
+}
+.bdi-audience-legend__chip--baseline .bdi-audience-legend__dot {
+  /* Same indigo-300 as `.bdi-penreach__fill--bench` (charts + table
+     baseline bar) so the legend dot reads as "this is the baseline
+     audience" in the exact hue users associate with the baseline
+     bar. The previous neutral grey implied a different kind of
+     value, fighting the chart's story. */
+  background: var(--color-indigo-300, #a5b4fc);
+}
+.bdi-audience-legend__label {
+  font-weight: 600;
+}
+.bdi-audience-legend__sep {
+  color: var(--copy-slot-muted, var(--color-steel-500));
+  user-select: none;
+}
+.bdi-audience-legend__count {
+  color: var(--copy-slot-muted, var(--color-steel-600));
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.bdi-audience-legend__chev {
+  transition: transform .15s ease;
+}
+.bdi-audience-legend__chip[data-open='true'] .bdi-audience-legend__chev {
+  transform: rotate(180deg);
+}
+
+/* Popover overrides — narrower than the filter popover. We strip the
+   border that .bdi-filter-popover would inherit so the legend popover
+   reads as a soft floating card (shadow only). */
+/* Titan ships `.menu-popover` (MenuTrigger dropdown) with a thin
+   stroke + shadow combo. Our products read better as shadow-only
+   floating cards — same rule used by `.bdi-audience-legend__popover`
+   and `.bdi-filter-popover`. Source order beats Titan's defaults,
+   so no !important needed. */
+.menu-popover {
+  border: 0;
+}
+
+.bdi-audience-legend__popover.react-aria-Popover,
+.bdi-audience-legend__popover {
+  width: min(340px, calc(100vw - 32px));
+  max-height: none;
+  border: 0 !important;
+}
+.bdi-audience-legend__dialog,
+.react-aria-Dialog.bdi-audience-legend__dialog {
+  background: var(--surface-card, #ffffff) !important;
+  background-color: #ffffff !important;
+  display: flex;
+  flex-direction: column;
+}
+.bdi-audience-legend__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 10px 4px 16px;
+}
+.bdi-audience-legend__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, var(--color-steel-900));
+  text-align: left;
+  flex: 1 1 auto;
+}
+.bdi-audience-legend__close {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-radius: 999px;
+  color: var(--color-steel-600, #475569);
+}
+.bdi-audience-legend__close:hover {
+  background: var(--color-steel-100, #f1f5f9);
+  color: var(--color-steel-800, #1e293b);
+}
+.bdi-audience-legend__body {
+  padding: 12px 16px 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-primary, var(--color-steel-800));
+}
+.bdi-audience-legend__body p {
+  margin: 0 0 12px;
+}
+.bdi-audience-legend__body p:last-child {
+  margin-bottom: 0;
+}
+.bdi-audience-legend__body strong {
+  color: var(--text-primary, var(--color-steel-900));
+  font-weight: 600;
+}
+.bdi-audience-legend__meta {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 12px;
+  row-gap: 4px;
+  font-size: 12px;
+}
+.bdi-audience-legend__meta > div {
+  display: contents;
+}
+.bdi-audience-legend__meta dt {
+  color: var(--copy-slot-muted, var(--color-steel-600));
+  font-weight: 500;
+}
+.bdi-audience-legend__meta dd {
+  margin: 0;
+  color: var(--text-primary, var(--color-steel-800));
+}
+
+/* Audience definition — filter blocks layout (matches the boolean
+   criteria diagram: each block is a soft grey card, with bold labels
+   on top, values below, "OR" inline between values within a block,
+   and "AND" between blocks). */
+.bdi-audience-def {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bdi-audience-def__block {
+  background: var(--color-steel-100, #e2e8f0);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.bdi-audience-def__label {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, var(--color-steel-900));
+}
+.bdi-audience-def__values {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-primary, var(--color-steel-800));
+}
+.bdi-audience-def__op {
+  font-weight: 700;
+  color: var(--text-primary, var(--color-steel-900));
+  padding: 0 2px;
+}
+.bdi-audience-def__between {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary, var(--color-steel-900));
+  letter-spacing: 0.04em;
+  padding-left: 14px;
+}
+
+@media (max-width: 640px) {
+  .bdi-audience-legend {
+    padding-left: 0;
+  }
+  .bdi-audience-legend__chip {
+    flex-wrap: wrap;
+  }
+}
+
+.bdi-report-section-nav {
+  padding-left: 48px;
+  margin-top: 2px;
+  max-width: 100%;
+}
+.bdi-report-section-nav__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 2px;
+}
+.bdi-report-section-nav__group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+.bdi-report-section-nav__ring {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+.bdi-report-section-nav__ring img {
+  display: block;
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+.bdi-report-section-nav__tab.tab-trigger {
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding-inline: 8px;
+}
+.bdi-report-section-placeholder {
+  margin: 24px 0 0;
+  padding: 48px 28px;
+  text-align: center;
+  background: var(--surface-card, #fff);
+  border: 1px solid var(--color-steel-200);
+  border-radius: var(--bdi-radius, 8px);
+  box-shadow: var(--bdi-shadow, 0 1px 2px rgba(0, 0, 0, 0.04));
+}
+.bdi-report-section-placeholder h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary, var(--color-steel-900));
+}
+.bdi-report-section-placeholder p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+.bdi-meta-strip {
+  display: flex;
+  gap: 0;
+  margin: 0;
+  background: var(--bdi-card-bg);
+  border: 1px solid var(--bdi-border);
+  border-radius: var(--bdi-radius-sm);
+  overflow: hidden;
+  box-shadow: var(--bdi-shadow);
+}
+.bdi-meta-strip > div {
+  display: grid;
+  gap: 2px;
+  padding: 12px 18px;
+  border-right: 1px solid var(--bdi-row-sep);
+  min-width: 110px;
+}
+.bdi-meta-strip > div:last-child { border-right: 0; }
+.bdi-meta-strip dt {
+  font-size: 10px;
+  color: var(--color-steel-500);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.bdi-meta-strip dd {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-steel-900);
+  font-variant-numeric: tabular-nums;
+}
+
+/* =============================================================
+   Tabs (TitanTabs)
+   ============================================================= */
+.bdi-workspace {
+  position: relative;
+  display: grid;
+  gap: 14px;
+}
+
+/* Workspace mode — Rank | Landscape (TitanButtonGroup). */
+.bdi-workspace-mode .toggle-button-item {
+  font-size: 12px;
+  padding: 6px 10px;
+  gap: 6px;
+}
+.bdi-workspace-mode .toggle-button-item svg {
+  width: 14px;
+  height: 14px;
+}
+
+.bdi-tabs {
+  min-width: 0;
+}
+
+/* Workspace: vertical domain tabs (Brand | Media | Influencers) + panel. */
+.bdi-tabs-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  align-items: stretch;
+  min-width: 0;
+}
+.bdi-tabs-split > .bdi-tabs {
+  display: block;
+  min-width: 0;
+}
+.bdi-tabs-split .tabs-root {
+  min-width: 0;
+  width: 100%;
+}
+.bdi-tabs-split__tools {
+  grid-row: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px 12px;
+  min-width: 0;
+}
+
+/* Vertical TitanTabs: rail left, domain panel right; let Titan tokens handle triggers. */
+.bdi-tabs .tabs-root {
+  min-width: 0;
+  width: 100%;
+}
+.bdi-tabs .tabs-root-vertical {
+  min-height: 0;
+}
+.bdi-tabs .tab-panel {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+/* Drawer overlay must always sit above the sticky tabs */
+.drawer-overlay { z-index: 1000; }
+
+/* =============================================================
+   Scatter chart — bubble hover tooltip (compact, table-linked)
+   ============================================================= */
+.bdi-tooltip {
+  position: relative;
+  background: var(--bdi-card-bg, #ffffff);
+  border: 1px solid var(--color-steel-200);
+  border-radius: 10px;
+  padding: 10px 12px;
+  min-width: 140px;
+  max-width: 240px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .08), 0 1px 2px rgba(15, 23, 42, .04);
+  font-family: "Poppins", var(--font-audiense), system-ui, sans-serif;
+}
+.bdi-tooltip__title {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-steel-900);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  word-break: break-word;
+}
+.bdi-tooltip__cat {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+  line-height: 1.3;
+}
+.bdi-tooltip__meta {
+  margin: 0 0 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-steel-800);
+  font-variant-numeric: tabular-nums;
+}
+.bdi-tooltip__meta > span[aria-hidden] {
+  color: var(--color-steel-400);
+  font-weight: 500;
+}
+.bdi-tooltip__caption {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+.bdi-tooltip__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.bdi-tooltip--bubble-rich {
+  min-width: 200px;
+  max-width: min(320px, calc(100vw - 24px));
+  padding: 12px 14px 12px 12px;
+}
+.bdi-tooltip--bubble-rich .bdi-tooltip__title {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.bdi-tooltip__cat--bubble {
+  margin: 0 0 10px;
+  font-size: 11px;
+}
+.bdi-tooltip__stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bdi-tooltip__stat {
+  display: grid;
+  grid-template-columns: 8px 1fr 18px;
+  align-items: start;
+  column-gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+.bdi-tooltip__stat-pill {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.bdi-tooltip__stat-pill--target {
+  background: var(--color-aquamarine-500);
+}
+.bdi-tooltip__stat-pill--benchmark {
+  background: var(--color-blueberry-400);
+}
+/* Reserves the same 8px lead column as the coloured dots (no fake dot). */
+.bdi-tooltip__stat-pill--empty {
+  visibility: hidden;
+  pointer-events: none;
+}
+.bdi-tooltip__stat--tml .bdi-tooltip__stat-pill--empty {
+  margin-top: 0;
+  align-self: center;
+}
+.bdi-tooltip__stat--tml {
+  align-items: center;
+}
+.bdi-tooltip__stat-main {
+  font-size: 12px;
+  line-height: 1.45;
+  min-width: 0;
+}
+.bdi-tooltip__stat-label {
+  font-weight: 500;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+.bdi-tooltip__stat-value {
+  font-weight: 600;
+  color: var(--color-steel-900);
+  font-variant-numeric: tabular-nums;
+}
+.bdi-tooltip__stat-icon {
+  color: var(--color-steel-400);
+  flex-shrink: 0;
+  margin-top: 2px;
+  justify-self: end;
+}
+.bdi-tooltip__stat-icon-slot {
+  width: 14px;
+  height: 14px;
+  justify-self: end;
+}
+
+/* Domain panels */
+.bdi-panel {
+  display: grid;
+  gap: 18px;
+}
+
+/* Workspace: single column (tabs + panel full width). */
+.bdi-workspace__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  align-items: start;
+}
+.bdi-sunburst-rail > .bdi-sunburst {
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+.bdi-sunburst-aside__title {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--text-title, var(--color-steel-900));
+}
+.bdi-sunburst-aside__hint {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+  margin: 0;
+  line-height: 1.45;
+}
+.bdi-sunburst {
+  max-width: 100%;
+}
+.bdi-sunburst .sunburst-viz text {
+  fill: var(--color-steel-800);
+}
+.bdi-sunburst--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--bdi-border);
+  border-radius: var(--bdi-radius-sm);
+  background: var(--bdi-card-bg, #fff);
+}
+.bdi-sunburst__empty {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-steel-600);
+}
+/* Fila enlazada al sunburst: fondo suave en toda la fila (evita franja lateral tipo borde). */
+.bdi-domain-table .table-borderless tbody tr.bdi-table-row--linked td {
+  background: color-mix(
+    in srgb,
+    var(--color-ocean-500) 8%,
+    var(--table-cell-background, var(--surface-card, #fff))
+  );
+}
+.bdi-domain-table .table-borderless tbody tr.bdi-table-row--linked:hover td {
+  background: color-mix(
+    in srgb,
+    var(--color-ocean-500) 12%,
+    var(--table-row-hover, var(--color-steel-50, #f8fafc))
+  );
+}
+@media (max-width: 1100px) {
+  .bdi-workspace__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* =============================================================
+   Domain toolbar — search + filter trigger. Sorting is on the table
+   headers only. Sits flush above the table; no card chrome (rule:
+   hierarchy from layout, not from coloured borders).
+   ============================================================= */
+.bdi-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  margin: 2px 0 4px;
+  min-width: 0;
+}
+.bdi-toolbar__left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.bdi-toolbar__right {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  flex: 0 0 auto;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.bdi-export-menu-trigger.menu-trigger-button {
+  flex-shrink: 0;
+}
+.btn-primary.menu-trigger-button .menu-trigger-chevron {
+  color: var(--button-primary-slot-label);
+}
+.btn-primary.menu-trigger-button[data-hovered] .menu-trigger-chevron,
+.btn-primary.menu-trigger-button[data-pressed] .menu-trigger-chevron {
+  color: var(--button-primary-slot-label);
+}
+.bdi-toolbar__group-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary, var(--color-steel-800));
+  white-space: nowrap;
+}
+.bdi-toolbar__search {
+  flex: 1 1 200px;
+  min-width: 140px;
+  max-width: 360px;
+}
+
+/* TitanInputField: `field-root` binds --input-slot-* tokens for the active theme (LinkedIn). */
+.bdi-field.field-root {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.bdi-field.field-root .input-field {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Secondary icon trigger — circular control (matches report-list / Titan toolbar pattern). */
+.bdi-toolbar__filter-btn {
+  border-radius: 9999px;
+}
+
+.bdi-toolbar__filter-anchor {
+  display: inline-flex;
+}
+.bdi-toolbar__count {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary, var(--color-steel-600));
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.bdi-toolbar__count strong {
+  color: var(--text-primary, var(--color-steel-900));
+  font-weight: 600;
+}
+
+/* =============================================================
+   Active filter chips — sit below the toolbar so the user always
+   sees what's narrowing the data. Each chip is a one-click remove.
+   ============================================================= */
+.bdi-chips {
+  list-style: none;
+  margin: 0 0 4px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.bdi-chips__chip {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 4px 10px;
+  background: var(--pill-background, var(--color-steel-100));
+  color: var(--pill-text, var(--color-steel-700));
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+.bdi-chips__chip svg {
+  flex: 0 0 auto;
+  color: var(--pill-icon-color, var(--color-steel-600));
+  opacity: .85;
+}
+.bdi-chips__chip:hover {
+  background: var(--color-steel-200);
+  color: var(--text-primary, var(--color-steel-900));
+}
+.bdi-chips__chip:hover svg {
+  opacity: 1;
+}
+.bdi-chips__chip:focus-visible {
+  outline: 2px solid var(--input-slot-border-focus, var(--color-steel-500));
+  outline-offset: 2px;
+}
+
+/* =============================================================
+   Filters popover — anchored panel, no overlay (data behind it
+   stays visible so live changes are immediately verifiable).
+   Built on react-aria-components Popover so a11y is handled
+   for free (focus trap, Esc to close, outside click).
+   ============================================================= */
+/* react-aria's Popover renders into a portal as `.react-aria-Popover`.
+   We add our own class on top. Selectors below cover both the bare
+   className we pass AND the auto-applied react-aria class, so
+   neither portal-level styles nor cascade order can leave the
+   popover transparent. !important on background+z-index because
+   the portal sometimes inherits a lower z stacking context from
+   the trigger's offset parent. */
+.bdi-filter-popover,
+.react-aria-Popover.bdi-filter-popover,
+.bdi-filter-popover.react-aria-Popover {
+  --bdi-fp-pad: 16px;
+  /* Portal is outside .bdi-app — do not use --bdi-card-bg here (undefined on body). */
+  background: var(--surface-card, #ffffff) !important;
+  background-color: #ffffff !important;
+  /* Shadow-only floating card (matches `.bdi-audience-legend__popover`
+     and the Download `.menu-popover` override below). Hierarchy
+     comes from elevation, never from a colored stroke. */
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, .14), 0 2px 6px rgba(15, 23, 42, .08);
+  padding: 0;
+  width: min(560px, calc(100vw - 32px));
+  max-height: min(640px, calc(100vh - 120px));
+  overflow: hidden;
+  outline: none;
+  z-index: 2000 !important;
+  isolation: isolate;
+}
+/* The Dialog inside the popover should also be opaque so any
+   portion of it that paints (header, body, footer) covers what's
+   behind. Some themes apply transparent backgrounds to dialogs
+   when no surface token is present. */
+/* Open/close animation. The popover is anchored to the bottom-end of
+   the trigger, so scaling from the top-right corner makes it feel
+   like it "unfolds" from the trigger rather than appearing in mid
+   air. The easing curve (0.16, 1, 0.3, 1) is a smooth ease-out-expo
+   variant that decelerates confidently — common in Stripe / Linear
+   style UIs. Exit is shorter and harder so the popover gets out of
+   the way without dragging the eye. */
+.bdi-filter-popover {
+  transform-origin: top right;
+  will-change: transform, opacity;
+}
+.bdi-filter-popover[data-entering] {
+  animation: bdi-fp-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bdi-filter-popover[data-exiting] {
+  animation: bdi-fp-out 140ms cubic-bezier(0.4, 0, 1, 1);
+}
+/* Nested multi-select popovers anchor differently (bottom-start of
+   their own trigger), so they unfold from the top-left instead. */
+.bdi-ms-popover {
+  transform-origin: top left;
+}
+@keyframes bdi-fp-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes bdi-fp-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-2px) scale(0.98);
+  }
+}
+/* Honor users who opted out of motion. We still fade so the popover
+   doesn't pop in jarringly, but skip transform entirely. */
+@media (prefers-reduced-motion: reduce) {
+  .bdi-filter-popover[data-entering],
+  .bdi-filter-popover[data-exiting] {
+    animation-duration: 80ms;
+  }
+  @keyframes bdi-fp-in {
+    from { opacity: 0; transform: none; }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes bdi-fp-out {
+    from { opacity: 1; transform: none; }
+    to { opacity: 0; transform: none; }
+  }
+}
+
+/* Dialog fills the popover; opaque surface for portal (outside .bdi-app). */
+.bdi-filter-dialog,
+.react-aria-Dialog.bdi-filter-dialog {
+  background: var(--surface-card, #ffffff) !important;
+  background-color: #ffffff !important;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: inherit;
+}
+
+.bdi-fp {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: inherit;
+  background: var(--surface-card, #ffffff);
+  background-color: #ffffff;
+}
+.bdi-fp__body {
+  display: grid;
+  gap: 16px;
+  padding: 18px var(--bdi-fp-pad) 16px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+.bdi-fp__hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+  grid-column: 1 / -1;
+}
+.bdi-fp__section {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.bdi-fp__section--full {
+  grid-column: 1 / -1;
+}
+/* Neutral steel — Titan's --text-secondary token in this theme
+   has a slight teal tint that fights with the slider tracks and
+   pill semantic colours below. Hard-pin to steel for these
+   labels so the form controls stay quiet and the data tints
+   (status pills, slider tracks) are the only colour signal. */
+.bdi-fp__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-steel-600);
+  letter-spacing: 0.02em;
+}
+
+/* Status pills row — same look as Titan's pills but functional
+   as radios. */
+.bdi-fp__pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.bdi-fp__pill {
+  appearance: none;
+  border: 1px solid var(--border-slot-default, var(--color-steel-200));
+  background: transparent;
+  color: var(--text-primary, var(--color-steel-800));
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .12s ease, border-color .12s ease, color .12s ease;
+}
+.bdi-fp__pill:hover {
+  background: var(--color-steel-100);
+}
+.bdi-fp__pill.is-active {
+  background: var(--color-steel-100);
+  border-color: var(--color-steel-400);
+  color: var(--text-primary, var(--color-steel-900));
+}
+.bdi-fp__pill--over.is-active {
+  background: color-mix(in srgb, var(--color-aquamarine-600) 14%, white);
+  border-color: color-mix(in srgb, var(--color-aquamarine-600) 28%, white);
+  color: var(--color-aquamarine-600);
+}
+.bdi-fp__pill--under.is-active {
+  background: color-mix(in srgb, var(--color-tomato-600) 12%, white);
+  border-color: color-mix(in srgb, var(--color-tomato-600) 28%, white);
+  color: var(--color-tomato-600);
+}
+.bdi-fp__pill--benchmark.is-active {
+  background: var(--color-steel-100);
+  border-color: var(--color-steel-300);
+  color: var(--color-steel-800);
+}
+.bdi-fp__pill:focus-visible {
+  outline: 2px solid var(--input-slot-border-focus, var(--color-steel-500));
+  outline-offset: 2px;
+}
+
+.bdi-fp__slider-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.bdi-fp__slider-value {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-steel-700);
+}
+
+/* Two sliders side by side — Penetration + Affinity range. Range
+   slider thumbs sit at the far edges of their track, so without a
+   generous column gap (and a touch of inner padding) the right thumb
+   of the left slider literally collides with the left thumb of the
+   right slider. 40px gap + 8px inner padding gives both columns
+   their own clearance zone. */
+.bdi-fp__sliders {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px 40px;
+}
+.bdi-fp__sliders > .bdi-fp__section {
+  padding-inline: 6px;
+}
+@media (max-width: 520px) {
+  .bdi-fp__sliders {
+    grid-template-columns: 1fr;
+  }
+  .bdi-fp__sliders > .bdi-fp__section {
+    padding-inline: 0;
+  }
+}
+
+/* Multi-pick sections (Categories + tab-specific) — now compact
+   select triggers, so they fit comfortably side by side. */
+.bdi-fp__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px 24px;
+}
+.bdi-fp__cols .bdi-fp__section {
+  align-content: start;
+}
+@media (max-width: 520px) {
+  .bdi-fp__cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* MultiSelectField — looks like a Titan input/select trigger,
+   opens a tiny nested popover with checkboxes. The trigger uses
+   the project's existing form surface tokens so it sits next to
+   the sliders without visual noise. */
+.bdi-ms {
+  display: block;
+  min-width: 0;
+}
+.bdi-ms__trigger {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px 7px 12px;
+  background: var(--input-slot-bg, var(--surface-card, var(--bdi-card-bg)));
+  border: 1px solid var(--input-slot-border, var(--color-steel-200));
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--input-slot-color, var(--color-steel-900));
+  cursor: pointer;
+  transition: border-color .12s ease, box-shadow .12s ease, background .12s ease;
+  text-align: left;
+}
+.bdi-ms__trigger:hover {
+  border-color: var(--input-slot-border-hover, var(--color-steel-300));
+}
+.bdi-ms__trigger[aria-expanded="true"] {
+  border-color: var(--input-slot-border-focus, var(--color-steel-500));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--input-slot-border-focus, var(--color-steel-500)) 22%, transparent);
+}
+.bdi-ms__trigger:focus-visible {
+  outline: none;
+  border-color: var(--input-slot-border-focus, var(--color-steel-500));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--input-slot-border-focus, var(--color-steel-500)) 22%, transparent);
+}
+.bdi-ms__trigger svg {
+  flex: 0 0 auto;
+  color: var(--color-steel-500, #64748b);
+}
+.bdi-ms__value {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.bdi-ms__value[data-empty="true"] {
+  color: var(--color-steel-600, #475569);
+  font-weight: 500;
+}
+
+/* Smaller popover for the nested multi-select. Re-uses the
+   bdi-filter-popover surface (border, shadow, z-index, !important
+   bg) so we don't duplicate that battle. */
+.bdi-ms-popover.react-aria-Popover,
+.bdi-ms-popover {
+  width: min(260px, calc(100vw - 32px));
+  max-height: min(320px, calc(100vh - 120px));
+  background: var(--surface-card, #ffffff) !important;
+  background-color: #ffffff !important;
+}
+.bdi-ms-dialog,
+.react-aria-Dialog.bdi-ms-dialog {
+  background: var(--surface-card, #ffffff) !important;
+  background-color: #ffffff !important;
+}
+.bdi-ms__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  overflow-y: auto;
+  max-height: inherit;
+}
+.bdi-ms__list .react-aria-Checkbox,
+.bdi-ms__list [data-react-aria-component="Checkbox"] {
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.bdi-ms__list .react-aria-Checkbox:hover,
+.bdi-ms__list [data-react-aria-component="Checkbox"]:hover {
+  background: var(--color-steel-50, #f8fafc);
+}
+.bdi-ms__divider {
+  margin: 4px 6px;
+  border: 0;
+  border-top: 1px solid var(--color-steel-200, #e5e7eb);
+}
+
+.bdi-fp__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px var(--bdi-fp-pad) 14px;
+  background: var(--surface-card, #ffffff);
+  background-color: #ffffff;
+}
+
+
+.bdi-cat-grid__empty {
+  padding: 28px 18px;
+  text-align: center;
+  background: var(--color-steel-100);
+  border: 1px dashed var(--bdi-border);
+  border-radius: var(--bdi-radius-sm);
+  color: var(--color-steel-700);
+  font-size: 13px;
+}
+
+/* =============================================================
+   Domain · zero-result empty state
+   Same visual contract as the Interests `topics-empty` block —
+   centred icon → heading → muted copy → action link(s). We keep
+   the CSS local (under a `.bdi-empty` prefix) instead of
+   importing the topics stylesheet so the standalone better-di-in
+   app still ships a fully-styled empty state. Visually identical
+   to the Interests block when both render in the unified
+   `improving-di` shell.
+   ============================================================= */
+.bdi-empty {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 56px 20px 64px;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+.bdi-empty__icon {
+  color: var(--color-steel-400);
+  margin-bottom: 6px;
+}
+.bdi-empty h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary, var(--color-steel-900));
+}
+.bdi-empty p {
+  margin: 0;
+  font-size: 13px;
+  max-width: 360px;
+  line-height: 1.5;
+}
+/* Action row sits below the copy and hosts the context-aware
+   reset(s) — "Clear search" and/or "Clear filter" depending on
+   what the user actually had active. Two links read as a row
+   with comfortable click targets; one link reads as a standalone
+   CTA. */
+.bdi-empty__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+.bdi-empty__link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  color: var(--link-slot-color, var(--color-indigo-600));
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.bdi-empty__link:hover {
+  text-decoration: none;
+}
+
+/* =============================================================
+   Domain table — flat, borderless table per tab. We rely on the
+   Titan `table-borderless` styling that TitanTable applies (which
+   in turn pulls colors, padding, separators, hover and header
+   typography from `--table-*` semantic tokens). The wrapper here
+   only neutralises any card chrome and adds cell-internal layout
+   for the affinity bars.
+   ============================================================= */
+.bdi-domain-table {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.bdi-table-breadcrumb--above-table {
+  margin-bottom: 12px;
+  min-width: 0;
+}
+
+.bdi-table-breadcrumb {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 4px;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.bdi-table-breadcrumb__sep {
+  color: var(--text-secondary, var(--color-steel-600));
+  font-weight: 400;
+}
+
+.bdi-table-breadcrumb__current {
+  font-weight: 600;
+  color: var(--text-primary, var(--color-steel-900));
+}
+
+.bdi-table-cat-drill {
+  text-align: left;
+  max-width: 100%;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+}
+
+.bdi-domain-table__footer {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 0;
+  width: 100%;
+  min-height: 36px;
+}
+.bdi-domain-table__footer--single {
+  padding-top: 8px;
+}
+.bdi-domain-table__range {
+  grid-row: 1;
+  grid-column: 1;
+  justify-self: start;
+  z-index: 1;
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary, var(--color-steel-600));
+  font-variant-numeric: tabular-nums;
+}
+.bdi-domain-table__pagination {
+  grid-row: 1;
+  grid-column: 1;
+  justify-self: center;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+  pointer-events: none;
+}
+.bdi-domain-table__pagination > * {
+  pointer-events: auto;
+}
+
+.bdi-table-cat-drill__tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+.bdi-table-row--insufficient {
+  background: var(--surface-page, var(--color-steel-50));
+}
+.bdi-table-empty-metric {
+  font-size: 12px;
+  color: var(--copy-slot-muted, var(--color-steel-500));
+  font-variant-numeric: tabular-nums;
+}
+
+.bdi-insufficient-signal-wrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 8px 0 4px;
+}
+.bdi-insufficient-signal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin: 0;
+  padding: 32px 28px;
+  text-align: center;
+  background: var(--surface-card, #fff);
+  border: 1px solid var(--color-steel-200);
+  border-radius: var(--bdi-radius, 8px);
+  box-shadow: var(--bdi-shadow, 0 1px 2px rgba(0, 0, 0, 0.04));
+  max-width: 520px;
+}
+.bdi-insufficient-signal__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary, var(--color-steel-900));
+}
+.bdi-insufficient-signal__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 100%;
+}
+.bdi-insufficient-signal__body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-primary, var(--color-steel-800));
+}
+.bdi-insufficient-signal__body strong {
+  font-weight: 600;
+}
+.bdi-insufficient-signal__hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+.bdi-insufficient-signal__back {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Typography baseline for the table — Titan defaults th to bold
+   and td to regular at the button slot font-size. We collapse
+   both to the same Titan body-m-400 shorthand (400 14px /
+   leading-m Audiense) so headers and cells share the same body
+   weight + size + family. Result: a calmer table where emphasis
+   comes from cell-level data styling (the affinity pill, the
+   audience bar) instead of a bold header row competing with the
+   actual data.
+
+   We target the inner sort-header button + span explicitly
+   because <button> elements short-circuit font inheritance in
+   some browsers — without these, the column-header text would
+   stay at the user-agent default weight even after we restyle
+   the th. font-variant-numeric and letter-spacing are NOT part
+   of the `font` shorthand, so tabular-nums on numeric children
+   (penreach % / abs) survives. Same recipe in Topics for
+   consistency. */
+.bdi-domain-table thead th,
+.bdi-domain-table thead th button,
+.bdi-domain-table thead th .column-sort-header,
+.bdi-domain-table tbody td,
+.bdi-domain-table tbody th {
+  font: var(--body-m-400);
+}
+/* Header cell also needs overflow visible (sort caret tooltip) +
+   relative positioning (for the column-header info button popovers
+   anchored against the th). Kept here, divorced from typography. */
+.bdi-domain-table thead th {
+  overflow: visible;
+  position: relative;
+}
+.bdi-row-name {
+  /* Brand name in the row-header cell. Inherits font / size /
+     weight from the td baseline (body-m-400) so the name reads
+     at the same body weight as the rest of the row. Keep only
+     the color override since that isn't part of `font`. */
+  color: var(--text-primary, var(--color-steel-900));
+}
+.bdi-row-name-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.bdi-row-name-cell--plain {
+  gap: 0;
+}
+
+.bdi-row-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid var(--color-steel-300);
+  background: var(--color-white-900, #fff);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.bdi-row-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.bdi-row-avatar__img--logomark {
+  object-fit: contain;
+  transform: scale(1.1);
+  transform-origin: center;
+}
+.bdi-row-avatar__initials {
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--color-steel-700);
+}
+
+/* Penetration & reach mega-column: one 2×3 grid so % / rail / abs columns
+   are identical for target + baseline (no horizontal offset between bar rows). */
+.bdi-penreach {
+  display: grid;
+  /* % column = max of both rows (same bar axis); left-aligned % removes the gap from right-align in a wide track. */
+  grid-template-columns: max-content minmax(0, 1fr) 9ch;
+  grid-template-rows: auto auto;
+  column-gap: 4px;
+  row-gap: 4px;
+  align-items: center;
+  justify-items: stretch;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.bdi-penreach__track {
+  display: block;
+  width: 100%;
+  height: 16px;
+  /* Same recipe as the Topics dual bar: 16px height, 4px radius,
+     steel-100 track. Keeping the visual identical across products
+     so the same metric reads the same shape, even when the
+     surrounding layout differs (here a 3-col mega-cell with
+     %/bar/abs, in Topics a 2-col row with %/bar). */
+  background: var(--color-steel-100);
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 0;
+}
+.bdi-penreach__fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  min-width: 2px;
+}
+.bdi-penreach__fill--target {
+  /* indigo-500 (not indigo-600/--link-slot-color): the audience
+     bar is data, not a link. Same token Topics uses. */
+  background: var(--color-indigo-500);
+}
+.bdi-penreach__fill--bench {
+  /* Pale indigo-300 (was steel-400 @ 0.6). Both bars in the
+     same hue family says "same metric, two audiences" instead
+     of "two different kinds of value", which a neutral grey
+     baseline implied. The audience fill (indigo-500) still wins
+     focus thanks to the saturation gap, even at low values. */
+  background: var(--color-indigo-300);
+}
+.bdi-penreach__pct {
+  display: block;
+  min-width: 0;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--text-primary, var(--color-steel-800));
+  font-weight: 500;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  justify-self: start;
+}
+.bdi-penreach__abs {
+  display: block;
+  min-width: 0;
+  width: 100%;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--text-primary, var(--color-steel-800));
+  font-weight: 600;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  justify-self: stretch;
+}
+.bdi-penreach__pct--baseline,
+.bdi-penreach__abs--baseline {
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+
+/* Penetration & reach column; anula center/right del layout de tabla. */
+.bdi-domain-table .layout-table-wrap .table-borderless thead th.bdi-col-penetration,
+.bdi-domain-table .layout-table-wrap .table-borderless tbody td.bdi-cell-penetration {
+  width: 1%;
+  max-width: 320px;
+  min-width: 140px;
+  text-align: left;
+}
+
+/* Rank layout: full-width table (no sunburst) — no fixed mega-column width cap. */
+.bdi-domain-table--rank .layout-table-wrap .table-borderless thead th.bdi-col-penetration,
+.bdi-domain-table--rank .layout-table-wrap .table-borderless tbody td.bdi-cell-penetration {
+  width: auto;
+  max-width: none;
+  min-width: 0;
+}
+.bdi-domain-table--rank .bdi-penreach {
+  max-width: none;
+  min-width: 0;
+}
+
+.bdi-domain-table .layout-table-wrap .table-borderless thead th.bdi-col-penetration.table-align-center,
+.bdi-domain-table .layout-table-wrap .table-borderless thead th.bdi-col-penetration.table-align-right,
+.bdi-domain-table .layout-table-wrap .table-borderless tbody td.bdi-cell-penetration.table-align-center,
+.bdi-domain-table .layout-table-wrap .table-borderless tbody td.bdi-cell-penetration.table-align-right {
+  text-align: left;
+}
+
+/* Compact pill sizing inside the table cells only. Keeps the
+   global pill styling untouched while allowing dense table rows. */
+.bdi-domain-table .pill {
+  font-size: 11px;
+  font-weight: 600;
+  min-height: 22px;
+  padding: 2px 8px;
+  letter-spacing: 0.01em;
+  gap: 4px;
+}
+.bdi-domain-table .pill svg {
+  width: 10px;
+  height: 10px;
+  stroke-width: 2.5;
+}
+
+@media (max-width: 900px) {
+  .bdi-domain-table { overflow-x: auto; }
+  .bdi-penreach { min-width: 0; max-width: 100%; }
+  .bdi-domain-table--rank .bdi-penreach {
+    max-width: none;
+    min-width: 0;
+  }
+}
+.bdi-link-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: var(--link-slot-color, var(--color-indigo-600));
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+.bdi-link-btn:hover { text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .bdi-toolbar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .bdi-toolbar__left { flex: 1 1 100%; }
+  .bdi-toolbar__right {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* =============================================================
+   Card base
+   ============================================================= */
+.bdi-card {
+  background: var(--bdi-card-bg);
+  border: 1px solid var(--bdi-border);
+  border-radius: var(--bdi-radius);
+  box-shadow: var(--bdi-shadow);
+  padding: var(--bdi-pad-lg);
+}
+.bdi-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.bdi-card__head h2 { margin-bottom: 4px; }
+.bdi-card__sub {
+  font-size: 13px;
+  color: var(--color-steel-600);
+  line-height: 1.6;
+  max-width: 640px;
+}
+
+.bdi-section-head {
+  display: grid;
+  gap: 4px;
+  margin: 4px 4px 12px;
+}
+.bdi-section-head h2 { font-size: 14px; color: var(--color-steel-900); }
+.bdi-section-head p { font-size: 13px; color: var(--color-steel-600); }
+
+/* =============================================================
+   Summary card
+   ============================================================= */
+.bdi-summary__head {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.bdi-summary__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--color-black-100);
+  color: var(--color-steel-700);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.bdi-summary__lead {
+  font-size: 14px;
+  color: var(--color-steel-600);
+  line-height: 1.6;
+  max-width: 720px;
+  margin: 0 0 36px;
+}
+.bdi-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.bdi-mini {
+  display: grid;
+  gap: 10px;
+  padding: 18px 18px 16px;
+  background: var(--color-black-100);
+  border-radius: var(--bdi-radius-sm);
+  min-height: 104px;
+  align-content: start;
+}
+.bdi-mini--up { background: color-mix(in srgb, var(--color-aquamarine-100) 70%, white); }
+.bdi-mini--down { background: color-mix(in srgb, var(--color-tomato-100) 70%, white); }
+.bdi-mini--span { grid-column: span 2; min-height: 104px; }
+.bdi-mini__label {
+  font-size: 10px;
+  color: var(--color-steel-500);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1;
+}
+.bdi-mini--up .bdi-mini__label { color: color-mix(in srgb, var(--color-aquamarine-600) 75%, var(--color-steel-600)); }
+.bdi-mini--down .bdi-mini__label { color: color-mix(in srgb, var(--color-tomato-600) 75%, var(--color-steel-600)); }
+.bdi-mini--up .bdi-mini__value { color: var(--color-aquamarine-600); }
+.bdi-mini--down .bdi-mini__value { color: var(--color-tomato-600); }
+.bdi-mini__value {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--color-steel-900);
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  margin-top: 2px;
+}
+.bdi-mini__value--name {
+  font-size: 17px;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+.bdi-mini__hint {
+  font-size: 11px;
+  color: var(--color-steel-500);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+@media (max-width: 1024px) {
+  .bdi-mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bdi-mini--span { grid-column: span 2; }
+}
+@media (max-width: 540px) {
+  .bdi-mini-grid { grid-template-columns: 1fr; }
+  .bdi-mini--span { grid-column: span 1; }
+}
+
+/* =============================================================
+   Chart card · Labeled Quadrant Scatter
+   - color encodes category (palette set in JS)
+   - persistent labels with leader lines for collision recovery
+   - dot/bubble modes, brush zoom, search, category filter
+   The chart sits "loose" in the panel — no card border or padding,
+   matching how the table is presented. The page chrome (heading,
+   tabs) provides plenty of context already.
+   ============================================================= */
+.bdi-chart-card {
+  display: block;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  box-shadow: none;
+}
+.bdi-chart-card__head { margin: 0 0 14px; }
+.bdi-chart-card__head .bdi-eyebrow { margin-bottom: 4px; }
+.bdi-chart-card__title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.bdi-chart-card__head .bdi-chart-card__title {
+  font-size: 18px;
+  margin: 0;
+  line-height: 1.25;
+}
+.bdi-chart-card__tooltip-content {
+  display: block;
+  max-width: min(360px, calc(100vw - 48px));
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--text-primary, var(--color-steel-900));
+  text-align: left;
+}
+
+/* Chart toolbar: search + zoom + reset (left) · labels + Top/All (end of row). */
+.bdi-chart-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px 16px;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: flex-start;
+  margin: 4px 0 6px;
+  box-sizing: border-box;
+}
+.bdi-chart-toolbar__top-split {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 2px 0 2px 12px;
+  margin-left: 4px;
+  border-left: 1px solid var(--color-steel-200);
+}
+.bdi-chart-toolbar__controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+  flex: 0 1 auto;
+}
+.bdi-chart-toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  min-width: 0;
+  margin-left: auto;
+}
+.bdi-chart-toolbar__scope {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 2px 0;
+}
+.bdi-chart-scope-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-steel-500);
+  line-height: 1;
+  user-select: none;
+}
+.bdi-chart-scope-label.is-selected {
+  color: var(--color-steel-900);
+  font-weight: 600;
+}
+.bdi-chart-scope-switch.switch-root {
+  flex-shrink: 0;
+}
+.bdi-chart-toolbar__search {
+  flex: 0 1 320px;
+  min-width: 160px;
+  max-width: min(400px, 50vw);
+}
+
+.bdi-chart-toolbar__search .bdi-field.field-root {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.bdi-chart-toolbar__search .bdi-field.field-root .input-field {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.bdi-chart-toolbar__zoom {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.bdi-chart-toolbar__labels {
+  display: grid;
+  align-items: center;
+  column-gap: 8px;
+  row-gap: 4px;
+  min-width: 0;
+}
+.bdi-chart-toolbar__labels--inline {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+.bdi-chart-toolbar__labels--inline .bdi-chart-slider__input {
+  width: min(140px, 28vw);
+  min-width: 100px;
+  flex: 0 1 auto;
+}
+.bdi-chart-toolbar__labels-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-steel-700);
+  white-space: nowrap;
+}
+.bdi-chart-toolbar__labels-text strong {
+  color: var(--color-steel-900);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-left: 2px;
+}
+.bdi-chart-toolbar__labels .bdi-chart-slider__input {
+  width: 100%;
+  margin: 0;
+}
+.bdi-chart-toolbar__labels-tip {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.35;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+.bdi-chart-toolbar__labels-tip--after-toolbar {
+  margin: 0 0 10px;
+  max-width: 640px;
+}
+
+/* Filter popover sliders should match the chart slider visual style:
+   same neutral track, indigo thumb and focus ring language. */
+.bdi-fp .slider-root,
+.bdi-drawer__slider .slider-root {
+  --slider-slot-track-height: 4px;
+  --slider-slot-track-bg: var(--color-steel-200);
+  --slider-slot-track-fill: var(--color-indigo-500, #6366f1);
+  --slider-slot-thumb-size: 14px;
+  --slider-slot-thumb-bg: var(--color-indigo-500, #6366f1);
+  --slider-slot-thumb-shadow: 0 0 0 1px var(--color-indigo-500, #6366f1);
+}
+.bdi-fp .slider-thumb,
+.bdi-drawer__slider .slider-thumb {
+  border: 2px solid #ffffff;
+}
+.bdi-fp .slider-thumb[data-hovered],
+.bdi-fp .slider-thumb[data-dragging],
+.bdi-drawer__slider .slider-thumb[data-hovered],
+.bdi-drawer__slider .slider-thumb[data-dragging] {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-indigo-500, #6366f1) 35%, transparent);
+}
+@media (max-width: 980px) {
+  .bdi-chart-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .bdi-chart-toolbar__controls {
+    width: 100%;
+    align-items: stretch;
+  }
+  .bdi-chart-toolbar__right {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .bdi-chart-toolbar__search {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+}
+
+/* Plot area — neutral background; color is now carried by the
+   points themselves so we don't need the green/red gradient. */
+.bdi-chart-wrap {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-steel-100) 25%, transparent) 0%,
+    transparent 100%
+  );
+  border-radius: var(--bdi-radius-sm);
+  padding: 4px 0;
+  isolation: isolate;
+}
+
+/* MUI X Charts renders the tooltip Popper inside ChartsLayerContainer; keep
+   overflow visible so the bubble tooltip is not clipped by the plot box. */
+.bdi-chart-wrap .MuiChartsLayerContainer-root {
+  overflow: visible;
+}
+
+.bdi-chart-wrap .MuiChartsTooltipContainer-root {
+  z-index: 20050;
+}
+.bdi-chart-wrap.is-zoom-mode { cursor: crosshair; }
+
+.bdi-chart-wrap .MuiChartsAxis-line,
+.bdi-chart-wrap .MuiChartsAxis-tick { stroke: var(--color-steel-300); }
+.bdi-chart-wrap .MuiChartsAxis-tickLabel,
+.bdi-chart-wrap .MuiChartsAxis-label { fill: var(--color-steel-700); font-size: 11px; }
+.bdi-chart-wrap .MuiChartsGrid-line {
+  stroke: var(--color-steel-200);
+  stroke-dasharray: 2 4;
+}
+
+/* Markers — translucent fill so dense areas reveal density, darker
+   stroke so each marker keeps an edge when overlapping. No hover
+   transform: a fixed center is required for accurate comparison
+   between neighbours and prevents tooltip flicker. */
+.bdi-chart-wrap circle.MuiScatterChart-marker,
+.bdi-chart-wrap .MuiScatterChart-series circle {
+  opacity: 1 !important;
+  fill-opacity: 0.55 !important;
+  stroke: color-mix(in srgb, currentColor 60%, var(--color-black-900) 40%);
+  stroke-width: 1.25;
+  stroke-opacity: 0.9;
+  paint-order: fill stroke;
+  cursor: pointer;
+  transition: fill-opacity .18s ease, stroke-width .18s ease;
+}
+.bdi-chart-wrap circle.MuiScatterChart-marker:hover,
+.bdi-chart-wrap circle.MuiScatterChart-marker[data-highlighted],
+.bdi-chart-wrap .MuiScatterChart-series circle:hover,
+.bdi-chart-wrap .MuiScatterChart-series circle[data-highlighted] {
+  fill-opacity: 0.9 !important;
+  stroke-width: 2;
+  stroke-opacity: 1;
+}
+.bdi-chart-wrap circle.MuiScatterChart-marker[data-faded],
+.bdi-chart-wrap .MuiScatterChart-series circle[data-faded] {
+  fill-opacity: 0.18 !important;
+  stroke-opacity: 0.4;
+}
+
+/* Label overlay — sits on top of the ScatterChart in the same
+   coordinate space, but as an SVG (not HTML) so leader lines, text,
+   and rounded backings stay perfectly aligned at every zoom level.
+   Pointer-events are disabled so the underlying markers stay fully
+   interactive (hover, tooltip). */
+.bdi-chart-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+.bdi-chart-leader {
+  stroke: var(--color-steel-400);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  opacity: 0.75;
+}
+.bdi-chart-label-bg {
+  fill: var(--color-white-1000, #ffffff);
+  stroke: var(--color-steel-200);
+  stroke-width: 1;
+  fill-opacity: 0.94;
+  filter: drop-shadow(0 1px 1px rgba(15, 23, 42, 0.06));
+}
+.bdi-chart-label-text {
+  fill: var(--color-steel-800);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  paint-order: stroke fill;
+  letter-spacing: -0.005em;
+}
+.bdi-chart-label-g.is-force .bdi-chart-label-bg {
+  stroke: var(--color-steel-300);
+  stroke-width: 1.1;
+}
+.bdi-chart-label-g.is-match .bdi-chart-label-bg {
+  fill: color-mix(in srgb, var(--color-indigo-100, #e0e7ff) 80%, #ffffff);
+  stroke: var(--color-indigo-500, #6366f1);
+  stroke-width: 1.4;
+}
+.bdi-chart-label-g.is-match .bdi-chart-label-text {
+  fill: var(--color-indigo-700, #4338ca);
+}
+.bdi-chart-match-ring {
+  fill: none;
+  stroke: var(--color-indigo-500, #6366f1);
+  stroke-width: 2;
+  stroke-opacity: 0.9;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-indigo-500, #6366f1) 50%, transparent));
+}
+
+/* Brush layer for area zoom — only present when zoom is active so
+   it doesn't intercept hover on the markers in normal use. */
+.bdi-zoom-brush {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.bdi-zoom-brush.is-active {
+  pointer-events: auto;
+  cursor: crosshair;
+  background: color-mix(in srgb, var(--color-indigo-500, #6366f1) 4%, transparent);
+}
+.bdi-zoom-brush__rect {
+  position: absolute;
+  border: 1.5px dashed var(--color-indigo-500, #6366f1);
+  background: color-mix(in srgb, var(--color-indigo-500, #6366f1) 12%, transparent);
+  border-radius: 4px;
+  pointer-events: none;
+}
+.bdi-chart-wrap p.bdi-chart-zoom-hint,
+.bdi-chart-zoom-hint {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-steel-900, #0f172a);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin: 0;
+  pointer-events: none;
+  z-index: 4;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
+}
+
+/* Max-labels slider — native range control restyled to match
+   Titan's input look (steel track, indigo thumb on focus). Lives
+   inside the chart toolbar (.bdi-chart-toolbar__labels). */
+.bdi-chart-slider__input {
+  appearance: none;
+  height: 4px;
+  background: var(--color-steel-200);
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+}
+.bdi-chart-slider__input::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--color-indigo-500, #6366f1);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px var(--color-indigo-500, #6366f1);
+  cursor: pointer;
+}
+.bdi-chart-slider__input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--color-indigo-500, #6366f1);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px var(--color-indigo-500, #6366f1);
+  cursor: pointer;
+}
+.bdi-chart-slider__input:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-indigo-500, #6366f1) 35%, transparent);
+}
+
+/* =============================================================
+   Category cards grid
+   ============================================================= */
+.bdi-cat-grid__items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 720px) {
+  .bdi-cat-grid__items { grid-template-columns: 1fr; }
+}
+.bdi-cat {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 14px;
+  padding: 20px;
+  min-width: 0;
+}
+.bdi-cat__head { display: grid; gap: 6px; }
+.bdi-cat__head h3 { letter-spacing: -0.005em; }
+.bdi-cat__path {
+  font-size: 11px;
+  color: var(--color-steel-600);
+  font-weight: 400;
+  line-height: 1.4;
+  word-break: break-word;
+}
+.bdi-cat__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 12px 0 2px;
+  border-top: 1px solid var(--bdi-row-sep);
+}
+.bdi-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: var(--color-black-100);
+  font-size: 11px;
+  color: var(--color-steel-700);
+  line-height: 1;
+  white-space: nowrap;
+}
+.bdi-chip__value {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-steel-900);
+  letter-spacing: -0.01em;
+}
+.bdi-chip__label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-steel-600);
+}
+.bdi-chip--up {
+  background: var(--color-aquamarine-100);
+  color: var(--color-aquamarine-600);
+}
+.bdi-chip--up .bdi-chip__value,
+.bdi-chip--up .bdi-chip__label { color: var(--color-aquamarine-600); }
+.bdi-chip--down {
+  background: var(--color-tomato-100);
+  color: var(--color-tomato-600);
+}
+.bdi-chip--down .bdi-chip__value,
+.bdi-chip--down .bdi-chip__label { color: var(--color-tomato-600); }
+
+.bdi-cat__table { overflow: visible; border-radius: 8px; }
+.bdi-cat__table .titan-table-wrapper,
+.bdi-cat__table .react-aria-Table { width: 100%; }
+.bdi-cat__table table { font-size: 12px; }
+.bdi-cat__table tbody td { font-size: 12px; line-height: 1.35; }
+.bdi-cat__table thead th { font-size: 11px; }
+
+/* Th-less reach bar column — visual reinforcement of the Reach %
+   value. Width is capped so the column doesn't stretch the table.
+   The fill color follows the row's index direction so the bar also
+   carries a subtle tone hint at a glance. */
+.bdi-cat__table th[data-key="reachBar"],
+.bdi-cat__table td.bdi-cat__bar-cell {
+  width: 92px;
+  min-width: 72px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.bdi-cat__bar {
+  display: block;
+  height: 6px;
+  background: var(--color-steel-100);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.bdi-cat__bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  transition: width .25s ease;
+}
+.bdi-cat__bar--over .bdi-cat__bar-fill { background: var(--color-aquamarine-500); }
+.bdi-cat__bar--neutral .bdi-cat__bar-fill { background: var(--color-steel-400); }
+.bdi-cat__bar--under .bdi-cat__bar-fill { background: var(--color-tomato-500); }
+
+/* Compact pills inside tables and drawer rows — smaller text, same
+   tonal family as the bg (aquamarine/tomato 600 over their 100). */
+.bdi-cat__table .pill,
+.bdi-drawer__section .pill,
+.bdi-tooltip--bubble-rich .pill {
+  font-size: 11px;
+  font-weight: 600;
+  min-height: 22px;
+  padding: 2px 8px;
+  letter-spacing: 0.01em;
+  gap: 4px;
+}
+.bdi-cat__table .pill svg,
+.bdi-drawer__section .pill svg,
+.bdi-tooltip--bubble-rich .pill svg {
+  width: 10px;
+  height: 10px;
+  stroke-width: 2.5;
+}
+
+.bdi-cat__footer { display: flex; justify-content: flex-end; padding-top: 4px; }
+
+/* =============================================================
+   Column header info tooltip — (i) next to sortable metric headers.
+   The sortable `th` uses React Aria press; stopPropagation on the
+   trigger + stacking (CSS) keep the (i) interactive. TitanTooltip
+   trigger must be RacButton/Focusable so TooltipTrigger’s context
+   attaches hover/focus (native <button> alone does not).
+   ============================================================= */
+.bdi-th-with-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+.bdi-th-info-blocker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.bdi-th-info-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-steel-500);
+  cursor: pointer;
+  transition: color .12s ease, background-color .12s ease;
+  flex-shrink: 0;
+  font: inherit;
+  vertical-align: middle;
+  position: relative;
+  z-index: 5;
+}
+.bdi-th-info-btn:hover,
+.bdi-th-info-btn:focus-visible {
+  color: var(--color-steel-800);
+  background: var(--color-black-100);
+}
+.bdi-th-info-btn:focus-visible {
+  outline: 2px solid var(--border-focus, var(--color-ocean-500));
+  outline-offset: 2px;
+}
+
+/* TitanTooltip portal — above sticky table chrome, filter popover (2K), chart tooltip */
+.tooltip-box {
+  z-index: 21000 !important;
+}
+
+.bdi-cat--empty .bdi-cat__empty {
+  background: var(--color-steel-100);
+  border: 1px dashed var(--bdi-border);
+  border-radius: var(--bdi-radius-sm);
+  padding: 18px 16px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-steel-600);
+  font-style: italic;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =============================================================
+   Drawer · NOTE: rendered in a portal at <body>, so we cannot
+   rely on --bdi-* vars scoped to .bdi-app. Use Titan primitive
+   tokens (defined on :root) for backgrounds, borders, etc.
+   ============================================================= */
+.bdi-drawer { display: grid; gap: 16px; }
+.bdi-drawer__path {
+  font-size: 11px;
+  color: var(--color-steel-600);
+  font-weight: 400;
+}
+.bdi-drawer__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+}
+.bdi-drawer__stat {
+  padding: 12px 14px;
+  border: 0;
+  display: grid;
+  gap: 4px;
+  border-radius: 10px;
+  background: var(--color-steel-100);
+}
+.bdi-drawer__stats dt {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  color: inherit;
+  opacity: 0.85;
+}
+.bdi-drawer__stats dd {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+}
+/* Tinted stat blocks — same color family for label and value, with a
+   gentle 100-shade background so each metric reads pre-attentively. */
+.bdi-drawer__stat--avg {
+  background: var(--color-ocean-100);
+  color: var(--color-ocean-700);
+}
+.bdi-drawer__stat--over {
+  background: var(--color-aquamarine-100);
+  color: var(--color-aquamarine-700);
+}
+.bdi-drawer__stat--under {
+  background: var(--color-tomato-100);
+  color: var(--color-tomato-700);
+}
+.bdi-drawer__stat--total {
+  background: var(--color-steel-100);
+  color: var(--color-steel-700);
+}
+.bdi-drawer__controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: end;
+}
+
+/* Range filters — sliders inline, no card box */
+.bdi-drawer__range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 28px;
+  padding: 4px 0 0;
+}
+.bdi-drawer__slider { display: grid; gap: 8px; min-width: 0; }
+.bdi-drawer__slider-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.bdi-drawer__slider-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-steel-700);
+  letter-spacing: 0.02em;
+}
+.bdi-drawer__slider-value {
+  font-size: 12px;
+  color: var(--color-steel-700);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+/* Inline reset link — no button box */
+.bdi-drawer__reset {
+  grid-column: 1 / -1;
+  justify-self: end;
+  margin: -4px 0 0;
+  padding: 4px 6px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-steel-600);
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .15s, background .15s;
+}
+.bdi-drawer__reset:hover { color: var(--color-steel-900); background: var(--color-black-100); }
+.bdi-drawer__reset:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-steel-200);
+}
+
+.bdi-drawer__count {
+  font-size: 11px;
+  color: var(--color-steel-500);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin: 0 0 -10px;
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--bdi-row-sep);
+}
+.bdi-drawer__empty {
+  padding: 24px 8px;
+  text-align: center;
+  color: var(--color-steel-600);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.bdi-drawer__list { display: grid; gap: 22px; }
+.bdi-drawer__section h4 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-steel-900);
+  background: transparent;
+  border-radius: 0;
+}
+.bdi-drawer__section--over h4 { color: var(--color-aquamarine-600); }
+.bdi-drawer__section--under h4 { color: var(--color-tomato-600); }
+.bdi-drawer__count-pill {
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--color-black-100);
+  color: var(--color-steel-700);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+.bdi-drawer__section--over .bdi-drawer__count-pill {
+  background: var(--color-aquamarine-100);
+  color: var(--color-aquamarine-600);
+}
+.bdi-drawer__section--under .bdi-drawer__count-pill {
+  background: var(--color-tomato-100);
+  color: var(--color-tomato-600);
+}
+.bdi-drawer__section ul {
+  margin-top: 8px;
+  display: grid;
+}
+.bdi-drawer__section li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid var(--bdi-row-sep);
+}
+.bdi-drawer__section li:first-child { border-top: 0; }
+.bdi-drawer__item-name { display: grid; gap: 5px; min-width: 0; }
+.bdi-drawer__item-name > span {
+  font-size: 13px;
+  color: var(--color-steel-900);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bdi-drawer__bar {
+  height: 4px;
+  background: var(--color-steel-100);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.bdi-drawer__bar-fill { display: block; height: 100%; border-radius: 2px; }
+.bdi-drawer__bar-fill--over { background: var(--color-aquamarine-500); }
+.bdi-drawer__bar-fill--neutral { background: var(--color-steel-400); }
+.bdi-drawer__bar-fill--under { background: var(--color-tomato-500); }
+.bdi-drawer__item-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+/* =============================================================
+   Responsive
+   ============================================================= */
+@media (max-width: 900px) {
+  .bdi-header {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .bdi-report-section-nav {
+    padding-left: 0;
+  }
+  .bdi-meta-strip { width: 100%; overflow-x: auto; }
+  .bdi-card__head { flex-direction: column; align-items: stretch; }
+  .bdi-chart-legend { justify-content: flex-start; gap: 14px; }
+  .bdi-drawer__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bdi-drawer__stats > div:nth-child(2) { border-right: 0; }
+  .bdi-drawer__controls { grid-template-columns: 1fr; }
+  .bdi-tabs-split {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .bdi-tabs-split__tools {
+    grid-row: 1;
+    justify-content: flex-start;
+  }
+  .bdi-tabs-split > .bdi-tabs {
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 540px) {
+  .bdi-card { padding: 18px; }
+  .bdi-cat { padding: 16px; }
+  .bdi-meta-strip > div { padding: 10px 14px; min-width: 90px; }
+  .bdi-meta-strip dd { font-size: 14px; }
+}
+

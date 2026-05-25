@@ -1,0 +1,8 @@
+body {
+  margin: 0;
+  font-family: var(--font-audiense), sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}

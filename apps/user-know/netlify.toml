@@ -1,0 +1,11 @@
+# Netlify: set “Base directory” to apps/user-know (monorepo) or use this folder as the site root.
+# Drag-and-drop: upload the contents of dist/ after `npm run build` (public/_redirects is copied into dist).
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

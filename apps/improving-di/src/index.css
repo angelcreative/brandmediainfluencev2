@@ -1,0 +1,227 @@
+/* =============================================================
+   improving-di · Unified mockup
+   Reuses the full visual contract from both source apps:
+   · better-di-in stylesheet — `.bdi-*` classes for navbar, page
+     header, audience legend, report-section nav, Brand/Media/
+     Influencers workspace (tables, scatter, filters).
+   · topics stylesheet — `.topics-*` classes for the Interests
+     workspace (vertical rail + category table + dual bars).
+   Both are loaded as-is so the unified shell stays close to the
+   source apps and any future style change in either flows through
+   automatically. Order: better-di-in first (the heavier base),
+   then topics — both define the same `body` / pill / table token
+   overrides with identical values so cascade order is safe.
+   Note: the breadcrumb strip styles live in the topics
+   stylesheet (it already wires `--breadcrumb-slot-*` Titan
+   tokens for bg + bottom border + per-crumb spacing), so the
+   unified shell inherits a fully Titan-compliant breadcrumb for
+   free as long as topics CSS loads after better-di-in.
+   ============================================================= */
+@import '../../better-di-in/src/index.css';
+@import '../../topics/src/index.css';
+
+/* =============================================================
+   improving-di shell overrides
+   Scope every rule under `.improving-di` so the unified mockup
+   never leaks into either source app while their stylesheets
+   are loaded above.
+   ============================================================= */
+
+/* ---------------------------------------------------------------
+   Report-section nav — alignment + density
+   1) Tabs left-edge aligns with the back-button (←). The source
+      app uses `padding-left: 48px` (= back-button width 36px +
+      title-row gap 12px) so the row aligns with the H1 instead.
+      For the unified mockup the back-button is the visual anchor
+      of the page, so we drop the indent.
+   2) Within-group gap shrinks from 16px → 8px so the tabs read
+      as a tight cluster (Sociodemo / Categories / Maps …) while
+      still leaving enough breathing room for each pill to land
+      on its own hit target. The two ring-separated clusters
+      (orange / blue) remain clearly distinct without extra
+      ornament.
+--------------------------------------------------------------- */
+.improving-di .bdi-report-section-nav {
+  padding-left: 0;
+}
+.improving-di .bdi-report-section-nav__group {
+  gap: 8px;
+}
+
+/* Single-pill affinity cell reads as one number per row, so the
+   pill should be centered in its column — left-alignment lets the
+   pill float away from the column header rule. Hooked off
+   `.bdi-cell-affinity` (the source apps now tag the affinity cell
+   so this rule has a stable target). Scoped to improving-di to
+   avoid changing the standalone apps without opt-in. */
+.improving-di .bdi-cell-affinity {
+  text-align: center;
+}
+.improving-di .bdi-cell-affinity .pill {
+  margin-inline: auto;
+}
+/* Header for the affinity column → center the label too so the
+   pill sits visually under it. Stable hook: react-aria-components
+   exposes the column id on the DOM `<th>` via data-key. */
+.improving-di .bdi-table-shell th[data-key='tml'],
+.improving-di .topics-table th[data-key='selectivity'] {
+  text-align: center;
+}
+.improving-di .bdi-table-shell th[data-key='tml'] .bdi-th-with-info,
+.improving-di .topics-table th[data-key='selectivity'] .bdi-th-with-info {
+  justify-content: center;
+}
+
+/* ---------------------------------------------------------------
+   Interests · compact tone-filter popover
+   Brands' .bdi-filter-popover defaults to a 560px canvas because
+   it hosts the full FiltersPanel (Status + sliders + multi-selects).
+   The Interests filter is a single-section pill row, so we tag the
+   popover with a `--tone` modifier and narrow it down to ~320px
+   here. The popover renders in a portal outside `.improving-di`,
+   so the rule is intentionally unscoped — but it only matches the
+   `--tone` modifier, which is only emitted by this filter, so it
+   never reaches the Brands popover.
+--------------------------------------------------------------- */
+.bdi-filter-popover.bdi-filter-popover--tone,
+.react-aria-Popover.bdi-filter-popover.bdi-filter-popover--tone {
+  width: min(320px, calc(100vw - 32px));
+  max-height: none;
+}
+
+/* ---------------------------------------------------------------
+   Interests · sticky table panel
+   The rail (25 interests) is much taller than the category table
+   (3–12 rows), so the grid container's height is anchored to the
+   rail. Without sticky, the panel sits at the top of its track and
+   the user has to scroll back up to read the table after pivoting
+   to an interest further down the rail.
+   Pin the right column to the viewport top so the table "travels"
+   with the page as the user scans the rail. `align-self: start`
+   stops the panel from stretching to the rail height (which would
+   defeat sticky), and the 12px offset matches the brands pattern
+   in `apps/better-di` for the equivalent inverted layout (sticky
+   rail, scrolling panel). No ancestor uses `overflow: hidden`
+   along the path, so the sticky element pins cleanly within the
+   page scroll context.
+--------------------------------------------------------------- */
+.improving-di .topics-tab-panel.tab-panel {
+  position: sticky;
+  top: 12px;
+  align-self: start;
+}
+
+/* ---------------------------------------------------------------
+   Universal search header
+   Workspace-level search bar that lives ABOVE the scope nav in
+   both real workspaces (Brands and Interests). Same component,
+   same visual rest state, so the user reads "this is the one
+   place to type" regardless of which tab they're on.
+   Layout: field on the left grows to ~520px max so it never
+   stretches across the whole row (giant inputs read as forms,
+   not toolbars); live count sits on the right with comfortable
+   spacing.
+--------------------------------------------------------------- */
+.improving-di .imp-universal-search {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0 14px;
+  margin-bottom: 12px;
+}
+/* Left cluster: search field + filter trigger. Reads as one
+   "narrowing" group (Common Region / Proximity) so the filter
+   never drifts away from the search the user just typed. The
+   filter sits at 8px so it visually attaches to the field. */
+.improving-di .imp-universal-search__lead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+.improving-di .imp-universal-search__field {
+  /* Pinned at 460px — `0 0 460px` blocks flex shrink so the actions
+     cluster on the right can never squeeze the search field below
+     the user's chosen size. The placeholder ("Search brands, media
+     or influencers…") fits comfortably without truncation at this
+     width and the field still reads as a toolbar input (not a
+     full-width form field). */
+  flex: 0 0 460px;
+  width: 460px;
+}
+.improving-di .imp-universal-search__field .field-root,
+.improving-di .imp-universal-search__field .input-field {
+  width: 100%;
+}
+.improving-di .imp-universal-search__count {
+  margin: 0;
+  font-size: 13px;
+  color: var(--copy-slot-muted, var(--color-steel-600));
+}
+.improving-di .imp-universal-search__count strong {
+  color: var(--text-primary, var(--color-steel-900));
+  font-weight: 600;
+  margin-right: 2px;
+}
+/* Right cluster of the bar: filter trigger, optional group-by
+   switch, and download menu. Pushed to the far right via
+   margin-left:auto so the search field on the left can flex
+   without the actions drifting. Gap of 12px keeps the targets
+   discrete (Fitts) while still reading as one related cluster. */
+.improving-di .imp-universal-search__actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.improving-di .imp-bdi-group-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-primary, var(--color-steel-800));
+}
+.improving-di .imp-bdi-group-switch__label {
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------
+   Brands · scope-nav layout + dim for zero-match domain tabs
+   The scope tabs are raw react-aria primitives (we bypass
+   TitanTabs to render a per-tab match badge). Visual contract
+   still inherits from `.tab-trigger.tab-trigger-vertical`; this
+   block only adds the badge layout and the dim behaviour while
+   the universal search is active. Mirrors the Interests rail
+   pattern in topics/src/index.css so the two scope navs read as
+   the same affordance.
+--------------------------------------------------------------- */
+.improving-di .imp-bdi-scope-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 120ms ease;
+}
+.improving-di .imp-bdi-scope-tab__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.improving-di .imp-bdi-scope-tab__count {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--copy-slot-muted, var(--color-steel-500));
+  font-variant-numeric: tabular-nums;
+}
+.improving-di .imp-bdi-scope-tab[data-selected] .imp-bdi-scope-tab__count {
+  color: var(--text-primary, var(--color-steel-700));
+}
+.improving-di .imp-bdi-scope-tab[data-no-matches='true']:not([data-selected]) {
+  opacity: 0.42;
+}
+.improving-di .imp-bdi-scope-tab[data-no-matches='true']:not([data-selected]):hover {
+  opacity: 0.7;
+}
