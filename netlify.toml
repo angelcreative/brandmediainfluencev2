@@ -1,7 +1,21 @@
 [build]
-  command = "npm run build --workspace flow-digital"
-  publish = "apps/flow-digital/dist"
+  # Install all workspace deps from the monorepo root (this hydrates
+  # apps/improving-di/node_modules and the two sibling workspaces it
+  # imports from at build time: better-di-in and topics).
+  command = "npm install && npm run build --workspace=improving-di"
+  # Vite emits the production bundle here. index.html, assets/* and
+  # the copied public/ contents (titan/, logos/, report-section/)
+  # all live under this dir.
+  publish = "apps/improving-di/dist"
 
+[build.environment]
+  # improving-di's package.json declares "engines": { "node": ">=20" }
+  # Pin Node 20 LTS so Netlify doesn't drift onto a newer major
+  # that breaks the build.
+  NODE_VERSION = "20"
+
+# Single-page app fallback — every URL renders index.html so client
+# routing (the report tabs) works on deep links and reloads.
 [[redirects]]
   from = "/*"
   to = "/index.html"
