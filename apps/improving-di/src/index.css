@@ -28,6 +28,21 @@
    ============================================================= */
 
 /* ---------------------------------------------------------------
+   Page left column — one vertical axis for the whole report
+   With no sidebar in the unified shell, EVERY top-level chrome
+   element (breadcrumb crumbs, back-button, audience legend, report
+   section nav, workspace search bar, vertical scope rails) lines
+   up against a single left edge: the page gutter (--bdi-gutter ≈
+   24-32px). Pinning `--bdi-title-indent: 0` here makes that the
+   default for the whole improving-di tree so individual blocks
+   never need to re-derive the offset. Bump this single knob if
+   we ever want everything to indent inward (e.g. 48px to sit
+   under the H1 text). */
+.improving-di {
+  --bdi-title-indent: 0px;
+}
+
+/* ---------------------------------------------------------------
    Report-section nav — alignment + density
    1) Tabs left-edge aligns with the back-button (←). The source
       app uses `padding-left: 48px` (= back-button width 36px +
@@ -46,6 +61,43 @@
 }
 .improving-di .bdi-report-section-nav__group {
   gap: 8px;
+}
+
+/* ---------------------------------------------------------------
+   Interests rail — match Brands rail density in the unified shell
+   The standalone topics app ships a tighter rail (10/14 padding,
+   13px font) so the default 8-tab top-N list fits the report
+   without scroll. In improving-di the rail is capped at 5 tabs
+   (Miller's law) and sits inside a navbar-fed report shell with
+   different vertical budget, so we lift the rail back up to the
+   full Titan vertical-tab contract — same comfortable density as
+   the Brands rail (Brand / Media / Influencers), so the two
+   workspaces read as siblings, not as different products.
+   · padding: var(--spacing-m) var(--spacing-xl) — Titan default
+     reinstated by RE-CLEARING our standalone override values to
+     the token-driven ones.
+   · font-size: var(--button-slot-font-size) — Titan default body
+     for tabs, restored.
+   · count badge bumped 12 → 13px so it stays one step below the
+     14px name (same hierarchy ratio as the Brands rail).
+   · min-width 280px so the longest label ("Sustainability &
+     ecology") + count fits without truncation at the bigger
+     font. The standalone rail stays at Titan's 180px default
+     because its smaller font + tighter padding still fits there.
+   The `--compact` modifier from the standalone CSS keeps owning
+   the expanded "Show all 25" state — that part needs to stay
+   dense regardless of the host app, otherwise 25 tabs overflow
+   the viewport. */
+.improving-di .topics-rail__list.tabs-list-vertical {
+  min-width: 280px;
+}
+.improving-di .topics-rail__tab.tab-trigger-vertical {
+  padding-block: var(--spacing-m);
+  padding-inline: var(--spacing-xl);
+  font-size: var(--button-slot-font-size);
+}
+.improving-di .topics-rail__tab-count {
+  font-size: 13px;
 }
 
 /* Single-pill affinity cell reads as one number per row, so the
