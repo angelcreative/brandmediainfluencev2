@@ -3028,7 +3028,7 @@ const EXPORT_MENU_ITEMS = [
 function ExportDownloadMenu() {
   return (
     <MenuTrigger>
-      <RacButton className="btn btn-primary with-icon menu-trigger-button bdi-export-menu-trigger">
+      <RacButton className="btn btn-secondary with-icon menu-trigger-button bdi-export-menu-trigger">
         <Download size={16} aria-hidden />
         Download
         <span className="menu-trigger-chevron" aria-hidden>
