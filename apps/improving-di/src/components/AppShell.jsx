@@ -373,7 +373,7 @@ function PageHeader() {
 ------------------------------------------------------------- */
 const REPORT_SECTION_TABS_ORANGE = [
   { id: 'sociodemo', label: 'Sociodemo' },
-  { id: 'categories', label: 'Categories' },
+  { id: 'categories', label: 'Interests' },
   { id: 'maps', label: 'Maps' },
   { id: 'persona', label: 'Persona overview' },
   { id: 'segmentation', label: 'Segmentation' },
@@ -383,7 +383,7 @@ const REPORT_SECTION_TABS_BLUE = [
   { id: 'lifestyle', label: 'Lifestyle profile' },
   { id: 'ai-chat', label: 'AI chat' },
   { id: 'brands-influence', label: 'Influencers & brands' },
-  { id: 'interests', label: 'Interests categories' },
+  { id: 'interests', label: 'Interest categories' },
 ]
 
 const REPORT_SECTION_TABS = [
