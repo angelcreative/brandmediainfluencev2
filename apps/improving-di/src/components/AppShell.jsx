@@ -1102,8 +1102,19 @@ function InterestsWorkspace() {
     if (!isSearching) return 0
     const q = query.trim().toLowerCase()
     let n = 0
+    /* Mirror the relaxed match used by the rail counter and the
+       table filter (see TopicsView.matchesByInterest / categories):
+       a row is a hit when either its own name OR its parent
+       interest's name contains the query. Without this clause the
+       universal header would announce "0 matches" while the rail
+       and the table are happily rendering the interest the user
+       searched for — typing "tv" surfaces Film & TV everywhere
+       except in this number, which read as a stale UI bug. */
     for (const c of ALL_CATEGORIES) {
-      if (c.name.toLowerCase().includes(q)) n += 1
+      const hit =
+        c.name.toLowerCase().includes(q) ||
+        c.interestName.toLowerCase().includes(q)
+      if (hit) n += 1
     }
     return n
   }, [isSearching, query])

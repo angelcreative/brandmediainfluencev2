@@ -599,8 +599,18 @@ function InterestPanel({
      the standalone sends only `toneFilter` → legacy predicate. */
   const usingFullFilters = filters !== null
   const categories = useMemo(() => {
+    /* Same expanded match as `matchesByInterest` above: a row is
+       a hit when the query lives in either its own name OR the
+       parent interest's name. Without the second clause, searching
+       "tv" would land on the Film & TV interest in the rail but
+       show an empty table — the user sees the scope name surface
+       but the rows that should belong to it disappear. */
     const searched = isSearching
-      ? sourcePool.filter((c) => c.name.toLowerCase().includes(q))
+      ? sourcePool.filter(
+          (c) =>
+            c.name.toLowerCase().includes(q) ||
+            c.interestName.toLowerCase().includes(q),
+        )
       : sourcePool
     let narrowed = searched
     if (usingFullFilters) {
@@ -943,13 +953,22 @@ export default function TopicsView({
      interest, how many of its categories match — the count is
      then surfaced in the rail next to the name. The data model
      is small (25 interests × ~10 cats each) so a single linear
-     pass per keystroke is cheap and avoids any indexing. */
+     pass per keystroke is cheap and avoids any indexing.
+     A category counts as a match when EITHER its own name OR its
+     parent interest's name contains the query — typing "tv" must
+     surface "Film & TV" even though none of that interest's
+     individual category names contain the substring. Treating the
+     interest name as searchable mirrors the user's mental model:
+     they're navigating to a scope, not just listing a row. */
   const matchesByInterest = useMemo(() => {
     const q = query.trim().toLowerCase()
     if (!q) return null
     const acc = new Map()
     for (const c of ALL_CATEGORIES) {
-      if (c.name.toLowerCase().includes(q)) {
+      const hit =
+        c.name.toLowerCase().includes(q) ||
+        c.interestName.toLowerCase().includes(q)
+      if (hit) {
         acc.set(c.interestId, (acc.get(c.interestId) ?? 0) + 1)
       }
     }
