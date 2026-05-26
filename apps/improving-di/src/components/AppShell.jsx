@@ -382,7 +382,7 @@ const REPORT_SECTION_TABS_ORANGE = [
 const REPORT_SECTION_TABS_BLUE = [
   { id: 'lifestyle', label: 'Lifestyle profile' },
   { id: 'ai-chat', label: 'AI chat' },
-  { id: 'brands-influence', label: 'Brands & influence' },
+  { id: 'brands-influence', label: 'Brands & influencers' },
   { id: 'interests', label: 'Interests' },
 ]
 

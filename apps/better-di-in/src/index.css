@@ -277,16 +277,15 @@ html[data-theme], .bdi-app {
   gap: 6px;
   white-space: nowrap;
 }
-/* Rest-state background — soft indigo-100 so both chips read as
-   "tappable badges" out of the box (Fitts/Affordance: the colour
-   makes the click target obvious even before hover). The previous
-   transparent rest state made the chips look like static labels
-   and trained users to ignore the chevron. Open/hover states are
-   already covered by the [data-open] rule and TitanButton tertiary
-   hover, so we only need to set the idle layer here. */
-.bdi-audience-legend__chip.btn {
-  background: var(--color-indigo-100, #eef2ff);
-}
+/* Rest-state stays transparent (Titan default for text buttons).
+   The indigo dot + label already carry the colour cue; an extra
+   wash on top competes with the audience scope pills below and
+   over-emphasises a piece of header metadata that should read as
+   subtle context, not a primary affordance. The chevron + cursor
+   communicate "tappable" — Fitts is satisfied by the existing
+   28px+ hit target without an idle background. The [data-open]
+   rule below keeps Titan's tertiary-hover bg so the affordance
+   still escalates on click and the popover origin stays anchored. */
 .bdi-audience-legend__chip.btn[data-open='true'] {
   background: var(--button-tertiary-slot-bg-hover);
 }
