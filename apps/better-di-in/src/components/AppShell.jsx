@@ -562,7 +562,7 @@ function AudienceLegend() {
 }
 
 const PAGE_HEADER_TOOLTIP =
-  'Brand, media and influencers — what this audience over- and under-indexes against benchmark.'
+  'Brands, media and influencers — what this audience over- and under-indexes against benchmark.'
 
 function PageHeader() {
   return (
@@ -765,7 +765,7 @@ function topChartSlicePerCategory(items, penMax, cap = TOP_CHART_POINT_CAP) {
 }
 
 const LANDSCAPE_CHART_TITLE = {
-  'brands-relationship': 'Brand · Target size × Affinity',
+  'brands-relationship': 'Brands · Target size × Affinity',
   media: 'Media · Target size × Affinity',
   influence: 'Influence · Target size × Affinity',
 }
@@ -774,7 +774,7 @@ const LANDSCAPE_CHART_SUB = (() => {
   const cap = TOP_CHART_POINT_CAP
   return {
     'brands-relationship':
-      `Each bubble is one row from the Brand tab — the same entity as the Name column in the item table. Horizontal position is target size (% of audience); vertical position is Affinity (dashed line at 1.00×). Color groups rows by their interest category. Top shows up to ${cap} of the strongest signals (single list) or up to ${cap} per interest category; All plots every row that passes your filters. Table "Group by category" only changes the table; this chart always stays at row level.`,
+      `Each bubble is one row from the Brands tab — the same entity as the Name column in the item table. Horizontal position is target size (% of audience); vertical position is Affinity (dashed line at 1.00×). Color groups rows by their interest category. Top shows up to ${cap} of the strongest signals (single list) or up to ${cap} per interest category; All plots every row that passes your filters. Table "Group by category" only changes the table; this chart always stays at row level.`,
     media:
       `Each bubble is one row from the Media tab — the same entity as the Name column when the table is not grouped. Horizontal position is target size (%); vertical position is Affinity (dashed line at 1.00×). Color reflects format or category. Top shows up to ${cap} (single list) or up to ${cap} per category; All plots every filtered row. Table "Group by category" only changes the table; this chart always stays at row level.`,
     influence:
@@ -2555,7 +2555,7 @@ function normalizeTabSlot(domainId, slot) {
    workspace (vertical rail + tables + filters + scatter) without
    re-declaring the table machinery. */
 export const DOMAIN_TABS = [
-  { id: 'brands-relationship', label: 'Brand' },
+  { id: 'brands-relationship', label: 'Brands' },
   { id: 'media', label: 'Media' },
   { id: 'influence', label: 'Influencers' },
 ]
@@ -3160,7 +3160,7 @@ export default function AppShell() {
               <div className="bdi-tabs">
                 <TitanTabs
                   orientation="vertical"
-                  ariaLabel="Brand · Media · Influencers"
+                  ariaLabel="Brands · Media · Influencers"
                   items={tabs}
                   selectedKey={active}
                   onSelectionChange={(key) => {
