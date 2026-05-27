@@ -98,6 +98,56 @@
 }
 
 /* ---------------------------------------------------------------
+   Production layout hardening (Netlify)
+   Symptom: huge white bands between the report-section tabs and
+   the workspace search bar, and/or between search and the table,
+   while local dev looks compact. Root causes we guard against:
+   1) `.bdi-tabs-split { grid-template-rows: minmax(0, 1fr) }`
+      stretching the vertical-tabs shell to fill a tall ancestor.
+   2) `.tabs-root-vertical` auto-placement putting TabPanels in a
+      second row under the rail instead of beside it when more than
+      one panel is in the DOM (older react-aria or forced mount).
+   3) `.bdi-main` / workspace stretching inside the app shell's
+      `1fr` row and distributing empty space between grid children.
+   These rules are scoped to `.improving-di` so standalone apps are
+   untouched. */
+.improving-di.bdi-app.titan-app-root {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+}
+.improving-di .bdi-main {
+  align-content: start;
+  min-height: 0;
+}
+.improving-di .bdi-workspace,
+.improving-di #report-section-panel-interests {
+  align-self: start;
+  width: 100%;
+  min-height: 0;
+}
+.improving-di .bdi-tabs-split {
+  grid-template-rows: auto;
+  align-items: start;
+}
+.improving-di .bdi-tabs .tabs-root-vertical {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+}
+.improving-di .bdi-tabs .tabs-list-vertical {
+  grid-column: 1;
+  grid-row: 1;
+}
+.improving-di .bdi-tabs .tab-panel {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  min-height: 0;
+}
+.improving-di .bdi-tabs .tab-panel[hidden] {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------------
    Interests rail — match Brands rail density in the unified shell
    The standalone topics app ships a tighter rail (10/14 padding,
    13px font) so the default 8-tab top-N list fits the report
